@@ -22,6 +22,7 @@ class PwaysPOSOrder(http.Controller):
     def set_order_value(self):
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
+        print("Data------Order Creation----------------",data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session','=',True)])
         order_line = []
         for item in data_in_json['order_items']:
@@ -119,6 +120,7 @@ class PwaysPOSOrder(http.Controller):
     @http.route('/order/cancel' ,type='json', auth='public')
     def pos_order_cancel(self):
         data_in_json = json.loads(request.httprequest.data)
+        print("Data-------------Order Cancel-----------------",data_in_json)
         pos_order = request.env['pos.order'].sudo().search([('order_id','=',data_in_json.get('order_id'))])
         if pos_order:
             pos_order.sudo().write({'rejection_reason': data_in_json.get('reason')})
@@ -135,6 +137,7 @@ class PwaysPOSOrder(http.Controller):
     @http.route('/order/auto/accept', type='json', auth='public')
     def pos_order_auto_accept(self):
         data_in_json = json.loads(request.httprequest.data)
+        print("Data---------------ORDER--............ACCEPT-------------------",data_in_json)
         pos_order = request.env['pos.order'].sudo().search([('order_id','=',data_in_json.get('order_id'))])
         if pos_order:
             pos_order.sudo().write({'accept_reason': data_in_json.get('reason')})
@@ -152,6 +155,7 @@ class PwaysPOSOrder(http.Controller):
     @http.route('/order/push/delivery-agent', type='json', auth='public')
     def pos_order_push_delivery_agent(self):
         database_name = json.loads(request.httprequest.data)
+        print("Data----------------PUSH DELIVERY AGENT--------------------------",database_name)
         pos_order = request.env['pos.order'].sudo().search([('order_id','=',database_name.get('order_id'))])
         if pos_order:
             if database_name.get('rider_name') and database_name.get('rider_number') and database_name.get('rider_status'):
@@ -162,6 +166,11 @@ class PwaysPOSOrder(http.Controller):
         else:
             response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
         return response
+
+
+
+
+#ORDER TESTING URL FOR DEMO 
 
 
     #order accept 

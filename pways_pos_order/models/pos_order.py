@@ -20,6 +20,10 @@ class PosResCompany(models.Model):
     order_pickup_url = fields.Char(string="Order Picked-up URL")
     get_customer_url = fields.Char(string="Get Customer Number URL")
 
+class PwaysProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    wera_item_id = fields.Integer(string="Wera Item ID")
 
 class PosSession(models.Model):
     _inherit = 'pos.session'
@@ -138,7 +142,6 @@ class PosOrder(models.Model):
             raise ValidationError(_('"Insert Order Accept URL in Company."'))
         response = requests.post(url=url, json=data, headers=headers)
         if response:
-            print('action acceept----------- response', response)
             payment_method = None
             if self.payment_mode == 'CASH':
                 payment_method = "Cash"
@@ -165,7 +168,6 @@ class PosOrder(models.Model):
         if not url or url == False:
             raise ValidationError(_('"Insert Food Ready URL in Company."'))
         if response:
-            print("response---...............- action_food_ready--....................---------",response)
             self.food_ready = True
         return True
 
@@ -176,8 +178,6 @@ class PosOrder(models.Model):
         response = requests.post(url=url, json=data, headers=headers)
         if not url or url == False:
             raise ValidationError(_('"Insert Get Delivery Agent URL in Company."'))
-        if response:
-            print("response-----.......action_get_delivery_agent..........................",response)
         return True
 
     def action_order_pickup(self):
@@ -188,9 +188,7 @@ class PosOrder(models.Model):
         if not url or url == False:
             raise ValidationError(_('"Insert Order Pickup URL in Company."'))
         if response:
-            print("response-----.......action_get_delivery_agent..........................",response)
             if self.enable_delivery == "1":
-                print("enable delivey -----------------")
                 self._create_order_picking()
                 # self._generate_pos_order_invoice()
                 self.order_pickup = True
@@ -203,6 +201,5 @@ class PosOrder(models.Model):
         response = requests.post(url=url, json=data, headers=headers)
         if not url or url == False:
             raise ValidationError(_('"Insert Customer Contact URL in Company."'))
-        if response:
-            print("response---- action_get_customer_contact-----------",response)
+        # if response:
         return True

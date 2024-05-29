@@ -1,69 +1,16 @@
 <odoo>
-    <!-- <record id="pways_pos_order_form_view" model="ir.ui.view">
-        <field name="name">pos.order.form.view</field>
-        <field name="model">pos.order</field>
-        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="/form/sheet/notebook/page[@name='products']" position="after">
-                <page string="Wera" name="wera">
-                    <group>
-                        <group>
-                            <field name="pos_order" invisible="1"/>
-                            <field name="restaurant_name" readonly="1"/>
-                            <field name="order_from" readonly="1"/>
-                        </group>
-                        <group>
-                            <field name="wera_order_id" readonly="1"/>
-                            <field name="payment_mode" readonly="1"/>
-                            <field name="delivery_agent_assign" invisible="1"/>
-                            <field name="food_ready" invisible="1"/>
-                            <field name="order_pickup" invisible="1"/>
-                        </group>
-                    </group>
-                </page>
-            </xpath>
-            <xpath expr="//field[@name='lines']/tree/field[@name='full_product_name']" position="after">
-                <field name="product_id"/>
-            </xpath>
-            <xpath expr="/form/header" position="inside">
-                <button name="action_accept" string="Accept" type="object" class="oe_button oe_styling_v8 oe_bigger"
-                    attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
-                <button name="%(pways_pos_order.pos_order_rejection_wizard_action)d"  string="Reject" type="action" class="oe_highlight"
-                    attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
-                <button name="action_food_ready" string="Food Ready" type="object" class="oe_highlight"
-                    attrs="{'invisible':['|','|',('pos_order','!=',True),('state','in',['cancel','draft','invoiced']),('food_ready','=', True)]}"/>
-                <button name="%(pways_pos_order.pos_order_contact_wizard_action)d" string="Call Swiggy Partner" type="action" class="oe_highlight"
-                    attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','draft'])]}"/>
-                <button name="action_get_delivery_agent" string="Get Delivery Agent" type="object" class="oe_highlight"
-                    attrs="{'invisible': ['|', '|', ('pos_order','!=',True), ('state','in',['cancel','draft']), ('delivery_agent_assign', '!=', False)]}"/>
-                <button name="action_order_pickup" string="Order Pickup" type="object" class="oe_highlight"
-                    attrs="{'invisible':['|','|',('pos_order','!=',True),('state','in',['cancel','draft']),('order_pickup','=', True)]}"/>
-                <button name="action_get_customer_contact" string="Get Customer Contact" type="object" class="oe_highlight"
-                    attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','draft'])]}"/>
-            </xpath>
-        </field>
-    </record> -->
-
     <record id="pos_session_config_inheirt" model="ir.ui.view">
         <field name="name">pos.config.kanban.view</field>
         <field name="model">pos.config</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='open_ui']" position="replace">
-<!--                <t t-if="record.online_order">
-                    <h2>NOT</h2>
-                </t>
-                <t t-else="">
-                    <h2>OKay</h2>
-                </t> -->
-                <!-- <t t-if="not record.online_order">      -->
                 <button t-if="record.current_session_state.raw_value != 'closing_control'" class="btn btn-primary" name="open_ui" type="object">
                     <t t-if="record.online_order"><span>fff</span></t>
-                                    <t t-elif="record.current_session_state.raw_value === 'opened'">Continue selling</t>
-                                    <t t-elif="!record.current_session_id.raw_value and !record.pos_session_username.value">New Session</t>
-                                    <t t-elif="record.current_session_state.raw_value === 'opening_control'">Open Session</t>
-                                </button>
-                <!-- </t> -->
+                        <t t-elif="record.current_session_state.raw_value === 'opened'">Continue selling</t>
+                        <t t-elif="!record.current_session_id.raw_value and !record.pos_session_username.value">New Session</t>
+                        <t t-elif="record.current_session_state.raw_value === 'opening_control'">Open Session</t>
+                    </button>
             </xpath>
         </field>
     </record>
@@ -74,8 +21,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="online_order"/>
-                <!-- <field name="state"/> -->
             </xpath>
+        </field>
+    </record>
+
+    <record id="pways_product_template_inherit_view" model="ir.ui.view">
+        <field name="name">product.normal.form.inherit.stock</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="point_of_sale.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="detailed_type" position="after">
+                <field name="wera_item_id"/>
+            </field>
         </field>
     </record>
 
