@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="pos_order_rejection_wizard_form" model="ir.ui.view">
+            <field name="name">pos.order.reject.wizard.form</field>
+            <field name="model">pos.order.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form >
+                    <group>
+                        <group>
+                            <field name="rejection_reason"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" />
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="pos_order_rejection_wizard_action" model="ir.actions.act_window">
+            <field name="name">POS Order Rejection Wizard</field>
+            <field name="res_model">pos.order.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
