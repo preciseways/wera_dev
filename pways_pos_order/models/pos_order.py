@@ -152,8 +152,6 @@ class PosOrder(models.Model):
             pos_order = self.env['pos.order'].search([('id','=',self.id)])
             self.add_payment(data)
             pos_order.action_pos_order_paid()
-            # move_vals = pos_order._prepare_invoice_vals()
-            # pos_order._create_invoice(move_vals)
             pos_order.sudo().write({'is_accepted': True})
         return True
 
