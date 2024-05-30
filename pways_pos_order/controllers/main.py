@@ -36,8 +36,9 @@ class PwaysPOSOrder(http.Controller):
                 'price': x['price'],
                 }
                 variant_line.append((0,0, var_val))
+                product_id = request.env['product.product'].sudo().search([('wera_item_id','=', item['wera_item_id'])])
             line_val = {
-                'product_id': item['item_id'] or False,
+                'product_id': product_id or False,
                 'full_product_name': item['item_name'] or False,
                 'qty': item['item_quantity'] or False,
                 'price_unit': item['item_unit_price'] or False,
@@ -51,8 +52,8 @@ class PwaysPOSOrder(http.Controller):
             'lines': order_line,
             'partner_id': 1,
             'session_id': pos_session.id,
-            'amount_tax': data_in_json['order_packaging_sgst_percent'] or False,
-            'amount_total': 1000,
+            'amount_tax': data_in_json['packaging_cgst_percent'] or False,
+            'amount_total': data_in_json['gross_amount'] or False,
             'amount_paid': 0,
             'amount_return': 0,
             'wera_order_id': data_in_json.get('external_order_id'),
