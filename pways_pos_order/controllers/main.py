@@ -12,6 +12,8 @@ class PwaysPOSOrder(http.Controller):
     #trial url for testing
     @http.route('/order/test', type='json', auth='public')
     def post_order_test(self):
+        print("Data------Order Test----------------")
+
         data_in_json = json.loads(request.httprequest.data)
         response = json.dumps({"code":1,"msg":'',"details":[]})
         return json.dumps({"code":1,"msg":'',"details":[]})  
@@ -20,6 +22,8 @@ class PwaysPOSOrder(http.Controller):
     #order creation 
     @http.route('/post/order', type='json', auth='public')
     def set_order_value(self):
+        print("Data------Order Creation----------------")
+
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
         print("Data------Order Creation----------------",data_in_json)
@@ -36,7 +40,7 @@ class PwaysPOSOrder(http.Controller):
                 'price': x['price'],
                 }
                 variant_line.append((0,0, var_val))
-                product_id = request.env['product.product'].sudo().search([('wera_product_item_id','=', item['wera_item_id'])])
+                product_id = request.env['product.product'].sudo().search([('wera_id','=', item['wera_item_id'])])
             line_val = {
                 'product_id': product_id or False,
                 'full_product_name': item['item_name'] or False,
