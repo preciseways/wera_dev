@@ -28,6 +28,7 @@ class PwaysPOSOrder(http.Controller):
         print("Data------Order Creation----------------",data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session','=',True)])
         order_line = []
+        product_id = False
         for item in data_in_json['order_items']:
             variant_line = []
             for x in item['variants']:
