@@ -23,7 +23,7 @@ class PosResCompany(models.Model):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    wera_id = fields.Integer()
+    wera_id = fields.Integer(string="Wera Item ID")
 
 
 class PosSession(models.Model):

@@ -3,7 +3,7 @@
     'description': '''Preciseways POS Order''',
     'author': 'Preciseways',
     'depends': [
-        'point_of_sale', 'portal', 'sale_management'
+        'point_of_sale', 'portal', 'sale_management', 'product'
     ],
     'data': [ 
             'security/ir.model.access.csv',
