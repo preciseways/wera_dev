@@ -20,11 +20,6 @@ class PosResCompany(models.Model):
     order_pickup_url = fields.Char(string="Order Picked-up URL")
     get_customer_url = fields.Char(string="Get Customer Number URL")
 
-class PwaySProductProduct(models.Model):
-    _inherit = 'product.product'
-
-    wera_product_item_id = fields.Integer(string="Wera Item ID")
-
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
