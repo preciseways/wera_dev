@@ -20,10 +20,10 @@ class PosResCompany(models.Model):
     order_pickup_url = fields.Char(string="Order Picked-up URL")
     get_customer_url = fields.Char(string="Get Customer Number URL")
 
-class PwaysProductProduct(models.Model):
+class PwaySProductProduct(models.Model):
     _inherit = 'product.product'
 
-    wera_item_id = fields.Integer(string="Wera Item ID")
+    wera_product_item_id = fields.Integer(string="Wera Item ID")
 
 class PosSession(models.Model):
     _inherit = 'pos.session'
@@ -87,23 +87,8 @@ class PosOrder(models.Model):
     customer_address = fields.Text(string='Complete Delivery Address')
     delivery_area = fields.Char(string='Source Delivery Area')
     address_instructions = fields.Text(string='Delivery Instructions')
-    wera_item_id = fields.Char(string='Wera Item ID')
-    item_id = fields.Char(string='Item ID')
-    item_name = fields.Char(string='Item Name')
-    item_unit_price = fields.Float(string='Unit Price of Item')
-    subtotal = fields.Float(string='Price of Item with Addons and Variants')
     discount = fields.Float(string='Discount on Item')
     item_quantity = fields.Integer(string='Quantity of Item Ordered')
-    wera_item_id = fields.Many2one('your_module.order_line', string='Item')
-    wera_cgst = fields.Float(string='Wera CGST on Item')
-    wera_sgst = fields.Float(string='Wera SGST on Item')
-    wera_cgst_percent = fields.Float(string='Wera CGST Percent on Item')
-    wera_sgst_percent = fields.Float(string='Wera SGST Percent on Item')
-    wera_packaging = fields.Float(string='Wera Packaging On Item')
-    wera_packaging_cgst = fields.Float(string='Wera CGST on Packaging')
-    wera_packaging_sgst = fields.Float(string='Wera SGST on Packaging')
-    wera_packaging_cgst_percent = fields.Float(string='Wera CGST Percent on Packaging')
-    wera_packaging_sgst_percent = fields.Float(string='Wera SGST Percent on Packaging')
     size_id = fields.Char(string='Size ID')
     size_name = fields.Char(string='Size Name')
     size_price = fields.Float(string='Size Price')
