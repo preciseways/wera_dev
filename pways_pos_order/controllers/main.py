@@ -22,8 +22,7 @@ class PwaysPOSOrder(http.Controller):
     #order creation 
     @http.route('/post/order', type='json', auth='public')
     def set_order_value(self):
-        print("Data------Order Creation----------------")
-
+        print("Data------Order Creation-------Function Called---------")
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
         print("Data------Order Creation----------------",data_in_json)
