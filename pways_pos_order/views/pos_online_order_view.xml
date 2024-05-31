@@ -204,7 +204,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_pways_online_order_tree"/>
         <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_pways_online_order_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_pways_online_order_form')})]"/>
-        <field name="domain">[('state','=','draft')]</field>
+        <field name="domain">[('pos_order', '!=', False)]</field>
     </record>
 
     <menuitem id="pways_pos_online_order"
