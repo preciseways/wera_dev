@@ -3,7 +3,7 @@
         <field name="name">pos.order.form</field>
         <field name="model">pos.order</field>
         <field name="arch" type="xml">
-            <form create="0">
+            <form create="0" class="custom_pos_order">
                 <header>
                     <!-- <button name="%(point_of_sale.action_pos_payment)d" string="Payment" class="oe_highlight custom-pos-order-button" type="action" states="draft"/> -->
                     <button name="action_pos_order_invoice" string="Invoice" type="object" attrs="{'invisible': [('state','!=','paid')]}" class="custom-pos-order-button"/>
