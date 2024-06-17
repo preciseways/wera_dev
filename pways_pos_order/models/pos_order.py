@@ -212,16 +212,16 @@ class PosOrder(models.Model):
         print('response------------------------',response)
         if response:
             print("response get-------------------------")
-            payment_method = None
-            if self.payment_mode == 'CASH':
-                payment_method = "Cash"
-            if self.payment_mode == "ONLINE":
-                payment_method = "Bank"
-            payment_method = self.env['pos.payment.method'].search([('name','=', payment_method)])
-            data=  {'amount': self.amount_total , 'payment_date': today, 'payment_method_id': payment_method.id , 'card_type': '', 'cardholder_name': '', 'transaction_id': '', 'payment_status': '', 'ticket': '', 'pos_order_id': self.id}
-            pos_order = self.env['pos.order'].search([('id','=',self.id)])
-            self.add_payment(data)
-            pos_order.action_pos_order_paid()
+            # payment_method = None
+            # if self.payment_mode == 'CASH':
+            #     payment_method = "Cash"
+            # if self.payment_mode == "ONLINE":
+            #     payment_method = "Bank"
+            # payment_method = self.env['pos.payment.method'].search([('name','=', payment_method)])
+            # data=  {'amount': self.amount_total , 'payment_date': today, 'payment_method_id': payment_method.id , 'card_type': '', 'cardholder_name': '', 'transaction_id': '', 'payment_status': '', 'ticket': '', 'pos_order_id': self.id}
+            # pos_order = self.env['pos.order'].search([('id','=',self.id)])
+            # self.add_payment(data)
+            # pos_order.action_pos_order_paid()
             pos_order.sudo().write({'is_accepted': True})
         return True
 
