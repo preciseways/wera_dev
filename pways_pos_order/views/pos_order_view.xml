@@ -32,10 +32,23 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='detailed_type']" position="after">
                 <field name="wera_id"/>
+                <field name="description"/>
+                <field name="is_veg"/>
+                <field name="in_stock"/>
+                <field name="cgst"/>
+                <field name="sgst"/>
+                <field name="igst"/>
             </xpath>
-            <!-- <field name="detailed_type" position="after">
-                <field name="wera_item_id"/>
-            </field> -->
+        </field>
+    </record>    
+    <record id="pways_product_category_inherited_view" model="ir.ui.view">
+        <field name="name">product.category.inherited.view</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="description"/>
+            </xpath>
         </field>
     </record>
 

@@ -5,11 +5,12 @@
         <field name="arch" type="xml">
             <form create="0" class="custom_pos_order">
                 <header>
+                    <button name="pos_menu_creation" string="Menu Creation" class="oe_highlight" type="object"/>
                     <!-- <button name="%(point_of_sale.action_pos_payment)d" string="Payment" class="oe_highlight custom-pos-order-button" type="action" states="draft"/> -->
                     <button name="action_pos_order_invoice" string="Invoice" type="object" attrs="{'invisible': [('state','!=','paid')]}" class="custom-pos-order-button"/>
                     <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','=','draft'), ('has_refundable_lines', '=', False)]}" class="custom-pos-order-button"/>
-                    <button name="action_accept" string="Accept" type="object" class="oe_button oe_styling_v8 oe_bigger custom-pos-order-button" attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
-                    <button name="%(pways_pos_order.pos_order_rejection_wizard_action)d"  string="Reject" type="action" class="oe_highlight custom-pos-order-button" attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
+                    <button name="action_accept" string="Accept" type="object" class="oe_button oe_styling_v8 oe_bigger custom-pos-order-button-accept" attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
+                    <button name="%(pways_pos_order.pos_order_rejection_wizard_action)d"  string="Reject" type="action" class="oe_highlight custom-pos-order-button-reject" attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','paid','invoiced'])]}"/>
                     <button name="action_food_ready" string="Food Ready" type="object" class="oe_highlight custom-pos-order-button" attrs="{'invisible':['|','|',('pos_order','!=',True),('state','in',['cancel','draft','invoiced']),('food_ready','=', True)]}"/>
                     <button name="%(pways_pos_order.pos_order_contact_wizard_action)d" string="Call Swiggy Partner" type="action" class="oe_highlight custom-pos-order-button-long" attrs="{'invisible':['|',('pos_order','!=',True),('state','in',['cancel','draft'])]}"/>
                     <button name="action_get_delivery_agent" string="Get Delivery Agent" type="object" class="oe_highlight custom-pos-order-button-long" attrs="{'invisible': ['|', '|', ('pos_order','!=',True), ('state','in',['cancel','draft']), ('delivery_agent_assign', '!=', False)]}"/>
@@ -61,10 +62,11 @@
                         <group>
                             <field name="name"/>
                             <field name="date_order"/>
-                            <field name="session_id" />
+                            <!-- <field name="session_id" /> -->
                             <field string="User" name="user_id" invisible="1"/>
                             <field name="partner_id" context="{'res_partner_search_mode': 'customer'}" attrs="{'readonly': [('state','=','invoiced')]}"/>
-                            <field name="fiscal_position_id" options="{'no_create': True}"/>
+                            <!-- <field name="fiscal_position_id" options="{'no_create': True}"/> -->
+                            <field name="customer_address" string="Delivery Address"/>
                         </group>
                         <group string="Wera Information">
                             <field name="order_id"/>
@@ -183,9 +185,9 @@
             <tree string="POS Orders" create="0" sample="1" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'">
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
-                <field name="session_id" />
+                <!-- <field name="session_id" /> -->
                 <field name="date_order"/>
-                <field name="pos_reference"/>
+                <!-- <field name="pos_reference"/> -->
                 <field name="partner_id"/>
                 <field name="order_id"/>
                 <field name="order_from"/>
@@ -204,7 +206,7 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_pways_online_order_tree"/>
         <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_pways_online_order_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_pways_online_order_form')})]"/>
-        <field name="domain">[('pos_order', '!=', False)]</field>
+        <field name="domain">[('state','=','draft')]</field>
     </record>
 
     <menuitem id="pways_pos_online_order"

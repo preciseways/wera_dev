@@ -9,6 +9,12 @@ import yaml
 
 class PwaysPOSOrder(http.Controller):
 
+    # #menu creation url
+    # @http.route('/menu/creation', type='json', auth='public')
+    # def pos_menu_creation(self):
+    #     pos_category = self.env['product.category'].sudo().search([('parent_id','=',False)])
+    #     pos_product = self.env['product.product'].sudo().search([( )])
+
     #trial url for testing
     @http.route('/order/test', type='json', auth='public')
     def post_order_test(self):

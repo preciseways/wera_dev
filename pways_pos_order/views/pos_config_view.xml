@@ -27,16 +27,22 @@
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='favicon']" position="after">
-                <field name="accept_url"/>
-                <field name="reject_url"/>
-                <field name="food_ready_url"/>
-                <field name="call_support"/>
-            </xpath>
-            <xpath expr="//field[@name='currency_id']" position="after">
-                <field name="order_delivery_url"/>
-                <field name="order_pickup_url"/>
-                <field name="get_customer_url"/>
+            <xpath expr="//page[@name='general_info']" position="after">
+            	<page name="wera_info" string="Wera Details">
+            		<group>
+	            		<group>
+			                <field name="accept_url"/>
+			                <field name="reject_url"/>
+			                <field name="food_ready_url"/>
+			                <field name="call_support"/>
+	            		</group>            		
+	            		<group>
+			                <field name="order_delivery_url"/>
+			                <field name="order_pickup_url"/>
+			                <field name="get_customer_url"/>
+	            		</group>
+            		</group>
+            	</page>            		
             </xpath>
         </field>
     </record>

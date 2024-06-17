@@ -20,11 +20,21 @@ class PosResCompany(models.Model):
     order_pickup_url = fields.Char(string="Order Picked-up URL")
     get_customer_url = fields.Char(string="Get Customer Number URL")
 
+class ProductCategory(models.Model):
+    _inherit = 'product.category'
+
+    description = fields.Char(string="Description")
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     wera_id = fields.Integer(string="Wera Item ID")
-
+    is_veg = fields.Boolean(string="Is Veg")
+    in_stock = fields.Boolean(string="In Stock")
+    description = fields.Char(string="Description")
+    cgst = fields.Float(string="CGST Tax")
+    igst = fields.Float(string="IGST Tax")
+    sgst = fields.Float(string="SGST Tax")
 
 class PosSession(models.Model):
     _inherit = 'pos.session'
@@ -109,6 +119,77 @@ class PosOrder(models.Model):
     rider_status = fields.Char(string="Rider Status")
     time_to_arrive = fields.Integer(string="Time to arrive")
 
+    def pos_menu_creation(self):
+        pos_category_ids = self.env['product.category'].sudo().search([('parent_id','=',False)])
+        print("pos_category------------------------",pos_category_ids)
+        pos_sub_category_ids = self.env['product.category'].sudo().search([('parent_id','in',pos_category_ids.ids)])
+        print("pos sub category-----------------",pos_sub_category_ids)
+        pos_product_ids = self.env['product.product'].sudo().search([('categ_id','in', pos_sub_category_ids.ids)])
+        print("pos pos_product pos_product-----------------",pos_product_ids)
+        main_categories = self.env['product.category'].sudo().search([('parent_id', '=', False)])
+        category_structure = {"main_categories": []}
+
+        for main_category in main_categories:
+            # Fetch sub-categories for each main category
+            sub_categories = self.env['product.category'].sudo().search([('parent_id', '=', main_category.id)])
+            sub_category_list = []
+            product_list = []
+            product_list_without_sub = self.env['product.product'].sudo().search([('categ_id','=', main_category.id)])
+            print("-----------------product_list_without_sub--------------------------",product_list_without_sub)
+            for rec in product_list_without_sub:
+                tax_list = []
+                tax_list.append({
+                    'cgst':rec.cgst,
+                    'igst':rec.igst,
+                    'sgst':rec.sgst
+                })
+                product_list.append({
+                    "id": rec.id,
+                    "name": rec.name,
+                    "category_id": main_category.id ,
+                    "price": rec.list_price,
+                    'is_veg': rec.is_veg,
+                    'in_stock': rec.in_stock,
+                    "description": rec.description,
+                    "gst_details": tax_list
+                }) 
+            for sub_category in sub_categories:
+                # Fetch products for each sub-category
+                products = self.env['product.product'].sudo().search([('categ_id', '=', sub_category.id)])
+                    
+                for product in products:
+                    tax_list = []
+                    tax_list.append({
+                        'cgst':product.cgst,
+                        'igst':product.igst,
+                        'sgst':product.sgst
+                    })
+                    product_list.append({
+                        "id": product.id,
+                        "name": product.name,
+                        "category_id": main_category.id ,
+                        "sub_category_id": sub_category.id,
+                        "price": product.list_price,
+                        'is_veg': product.is_veg,
+                        'in_stock': product.in_stock,
+                        "description": product.description,
+                        "gst_details": tax_list
+                    })                
+                sub_category_list.append({
+                    "id": sub_category.id,
+                    "name": sub_category.name,
+                    "description": sub_category.description,
+                    # "products": product_list
+                })
+            
+            category_structure["main_categories"].append({
+                "id": main_category.id,
+                "name": main_category.name,
+                "sub_categories": sub_category_list,
+                'items': product_list
+            })
+        print("category_structure000-------------------",category_structure)
+
     def action_auto_accept(self):
         today = datetime.now()
         pos_order = self.env['pos.order'].search([('id','=',self.id)])
@@ -122,12 +203,15 @@ class PosOrder(models.Model):
     def action_accept(self):
         today = datetime.now()
         url = self.company_id.accept_url
+        print("url----------------------",url)
         data = {'merchand_id': self.restaurant_id ,'order_id': self.order_id}
         headers = {"charset": "utf-8", "Content-Type": "application/json"}
         if not url or url == False:
             raise ValidationError(_('"Insert Order Accept URL in Company."'))
         response = requests.post(url=url, json=data, headers=headers)
+        print('response------------------------',response)
         if response:
+            print("response get-------------------------")
             payment_method = None
             if self.payment_mode == 'CASH':
                 payment_method = "Cash"

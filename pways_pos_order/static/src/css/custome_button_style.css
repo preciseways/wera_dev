@@ -1,16 +1,39 @@
-.custom-pos-order-button {
+.custom_pos_order .custom-pos-order-button {
     height: 80px;
     width: 110px;
     font-size: 18px;
 }
-.custom-pos-order-button-long {
+.custom_pos_order .custom-pos-order-button-accept {
+    height: 80px;
+    width: 110px;
+    font-size: 18px;
+    background-color: #04AA6D;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}.custom_pos_order .custom-pos-order-button-reject {
+    height: 80px;
+    width: 110px;
+    font-size: 18px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.custom_pos_order .custom-pos-order-button-long {
     height: 80px;
     width: 160px;
     font-size: 18px;
 }
-.custom-pos-order-sheet{
+.custom_pos_order .custom-pos-order-sheet{
     font-size: 18px;
 }
+
 .custom_pos_order .o_form_label{
     font-size: 18px;
 }
