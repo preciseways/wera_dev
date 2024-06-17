@@ -23,9 +23,11 @@ class POSorderRejectWizard(models.TransientModel):
             order_id = self.env['pos.order'].sudo().search([('id','=', active_id)])
             if order_id:
                 url = order_id.company_id.reject_url
+                print("order url-----------------------",url)
                 data = {'merchand_id': order_id.restaurant_id ,'order_id': order_id.id}
                 headers = {"charset": "utf-8", "Content-Type": "application/json"}
                 response = requests.post(url=url, json=data, headers=headers)
+                print("response------------------",response)
                 if response:
                     order_id.write({'rejection_reason': self.rejection_reason})
                     order_id.write({'state':'cancel'})
