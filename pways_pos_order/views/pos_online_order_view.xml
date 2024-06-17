@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <form create="0" class="custom_pos_order">
                 <header>
-                    <button name="pos_menu_creation" string="Menu Creation" class="oe_highlight" type="object"/>
+                    <!-- <button name="pos_menu_creation" string="Menu Creation" class="oe_highlight" type="object"/> -->
                     <!-- <button name="%(point_of_sale.action_pos_payment)d" string="Payment" class="oe_highlight custom-pos-order-button" type="action" states="draft"/> -->
                     <button name="action_pos_order_invoice" string="Invoice" type="object" attrs="{'invisible': [('state','!=','paid')]}" class="custom-pos-order-button"/>
                     <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','=','draft'), ('has_refundable_lines', '=', False)]}" class="custom-pos-order-button"/>
