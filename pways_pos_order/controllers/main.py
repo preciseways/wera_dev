@@ -46,7 +46,7 @@ class PwaysPOSOrder(http.Controller):
                 'price': x['price'],
                 }
                 variant_line.append((0,0, var_val))
-            product_id = request.env['product.product'].sudo().search([('wera_id','=', item['wera_item_id'])])
+            product_id = request.env['product.product'].sudo().search([('id','=', item['item_id'])])
             print("item id----------------------------------", item['wera_item_id'])
             print("item id----------------------------------", item['item_name'])
             print("product--------------------id-----------",product_id)
