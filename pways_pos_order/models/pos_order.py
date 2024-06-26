@@ -215,7 +215,25 @@ class PosOrder(models.Model):
         pos_products = self.env['product.product'].sudo().search([('enable', '=', True)])
 
         # Populate items
+            # for rec in product.taxes_id:
         for product in pos_products:
+            print("rec----------------", product)
+            print("rec----------------", product.taxes_id)
+            for rec in product.taxes_id:
+                if rec.amount_type == 'group':
+                    found_cgst = False  # Initialize a flag for CGST presence
+                    for x in rec.children_tax_ids:
+                        print('x-------------', x.amount)
+                        print('x-------------', x.name)
+                        if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
+                            found_cgst = True
+                            break  # Exit loop once CGST is found
+                    if found_cgst:
+                        print('This group tax includes CGST')
+                    else:
+                        print('This group tax does not include CGST')
+
+
             if product.categ_id.parent_id:
                 main_categorie_id = product.categ_id.parent_id.id
                 sub_category_id = product.categ_id.id
@@ -259,6 +277,7 @@ class PosOrder(models.Model):
             })
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
         url = self.company_id.menu_creation_url
+        print('self company--------------',self.company_id)
         if not url or url == False:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
         response = requests.post(url=url, json=category_structure, headers=headers)
