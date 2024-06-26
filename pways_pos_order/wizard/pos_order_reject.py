@@ -26,7 +26,7 @@ class POSorderRejectWizard(models.TransientModel):
                 print("order url-----------------------",url)
                 data = {"merchant_id": int(pos_order_id.restaurant_id) ,"order_id": pos_order_id.order_id,"rejection_id": int(self.rejection_reason)}
                 print('data------------------------',data)
-                headers = {"charset": "utf-8", "Content-Type": "application/json"}
+                headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
                 response = requests.post(url=url, json=data, headers=headers)
                 print("response------------------",response)
                 if response:
