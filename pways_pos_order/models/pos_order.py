@@ -48,7 +48,7 @@ class ProductTemplate(models.Model):
     image_url_zomato = fields.Char(string='Zomato Image URL')
     is_goods = fields.Boolean(string='Is Goods')
     order = fields.Integer(string="Order")
-    # preparation_time = fields.Integer(string="Preparation Time")
+    preparation_time = fields.Integer(string="Preparation Time")
 
 class PosAddonGroup(models.Model):
     _name = 'addon.group'

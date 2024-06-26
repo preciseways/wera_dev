@@ -42,6 +42,7 @@
                             <field name="enable"/>
                             <field name="addon_free_limit"/>
                             <field name="addon_limit"/>
+                            <field name="preparation_time"/>
                         </group>
                         <group>
                             <field name="image_url"/>
