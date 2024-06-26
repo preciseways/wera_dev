@@ -24,7 +24,7 @@ class POSorderRejectWizard(models.TransientModel):
             if pos_order_id:
                 url = pos_order_id.company_id.reject_url
                 print("order url-----------------------",url)
-                data = {'merchand_id': pos_order_id.restaurant_id ,'order_id': pos_order_id.order_id.id}
+                data = {'merchand_id': pos_order_id.restaurant_id ,'order_id': pos_order_id.order_id}
                 headers = {"charset": "utf-8", "Content-Type": "application/json"}
                 response = requests.post(url=url, json=data, headers=headers)
                 print("response------------------",response)
