@@ -48,6 +48,7 @@ class ProductTemplate(models.Model):
     image_url_zomato = fields.Char(string='Zomato Image URL')
     is_goods = fields.Boolean(string='Is Goods')
     order = fields.Integer(string="Order")
+    # preparation_time = fields.Integer(string="Preparation Time")
 
 class PosAddonGroup(models.Model):
     _name = 'addon.group'
@@ -156,6 +157,7 @@ class PosOrder(models.Model):
     time_to_arrive = fields.Integer(string="Time to arrive")
 
     def pos_menu_creation(self):
+        print("menu creation------------------------------------------------------")
         category_structure = {
             "merchant_id": "2544",
             "menu": {
