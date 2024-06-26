@@ -279,7 +279,16 @@ class PosOrder(models.Model):
         today = datetime.now()
         url = self.company_id.accept_url
         print("url----------------------",url)
-        data = {'merchand_id': self.restaurant_id ,'order_id': self.order_id}
+        max_preparation_time = 0
+        for x in self.lines:
+            print('x..........', x.product_id)
+            print("x..............preparation_time...", x.product_id.preparation_time) 
+            if x.product_id.preparation_time > max_preparation_time:
+                max_preparation_time = x.product_id.preparation_time
+
+        print("Highest preparation time:", max_preparation_time)
+
+        data = {'merchand_id': self.restaurant_id ,'order_id': self.order_id, 'preparation_time': max_preparation_time}
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
         if not url or url == False:
             raise ValidationError(_('"Insert Order Accept URL in Company."'))
