@@ -21,7 +21,7 @@ class POSorderRejectWizard(models.TransientModel):
         headers = {"charset": "utf-8", "Content-Type": "application/json"}
         if active_id:
             pos_order_id = self.env['pos.order'].sudo().search([('id','=', active_id)])
-            if order_id:
+            if pos_order_id:
                 url = pos_order_id.company_id.reject_url
                 print("order url-----------------------",url)
                 data = {'merchand_id': pos_order_id.restaurant_id ,'order_id': pos_order_id.order_id.id}
