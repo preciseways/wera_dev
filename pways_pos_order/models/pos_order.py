@@ -219,19 +219,32 @@ class PosOrder(models.Model):
         for product in pos_products:
             print("rec----------------", product)
             print("rec----------------", product.taxes_id)
-            for rec in product.taxes_id:
-                if rec.amount_type == 'group':
-                    found_cgst = False  # Initialize a flag for CGST presence
-                    for x in rec.children_tax_ids:
-                        print('x-------------', x.amount)
-                        print('x-------------', x.name)
-                        if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
-                            found_cgst = True
-                            break  # Exit loop once CGST is found
-                    if found_cgst:
-                        print('This group tax includes CGST')
-                    else:
-                        print('This group tax does not include CGST')
+            if product.taxes_id:
+                cgst = None
+                igst = None
+                sgst = None
+                for rec in product.taxes_id:
+                    if rec.amount_type == 'group':
+                        found_cgst = False  # Initialize a flag for CGST presence
+                        for x in rec.children_tax_ids:
+                            print('x-------------', x.amount)
+                            print('x-------------', x.name)
+                            if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
+                                cgst = x.amount
+                            if 'SGST' in x.name:
+                                sgst = x.amount
+                    if rec.amount_type == 'fixed':
+                        igst = rec.amount
+                gst = {
+                    "igst": igst,
+                    "cgst": cgst,
+                    "sgst": sgst,
+                    "inclusive": False,
+                    "gst_liability": product.gst_liability
+                }
+            else:
+                gst = None
+            print("gst--------------------------",gst)
 
 
             if product.categ_id.parent_id:
@@ -248,7 +261,7 @@ class PosOrder(models.Model):
                 "is_veg": product.is_veg,
                 "description": product.description or "",
                 "price": str(product.list_price),  # Ensure price is a string
-                "gst_details": None,
+                "gst_details": gst,
                 "packing_charges": str(product.packing_charges) or "0",  # Ensure packing_charges is a string
                 "enable": 1 if product.enable else 0,
                 "in_stock": 1 if product.in_stock else 0,
