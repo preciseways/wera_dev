@@ -38,22 +38,22 @@
                             <field name="description"/>
                             <field name="is_veg"/>
                             <field name="in_stock"/>
-                            <field name="packing_charges"/>
                             <field name="enable"/>
                             <field name="addon_free_limit"/>
                             <field name="addon_limit"/>
-                            <field name="preparation_time"/>
                         </group>
                         <group>
                             <field name="image_url"/>
                             <field name="image_url_swiggy"/>
                             <field name="image_url_zomato"/>
+                            <field name="preparation_time"/>
+                            <field name="packing_charges"/>
                             <field name="is_goods"/>
-                            <field name="cgst"/>
-                            <field name="sgst"/>
-                            <field name="igst"/>
                             <field name="inclusive"/>
                             <field name="gst_liability"/>
+                <!--             <field name="cgst"/>
+                            <field name="sgst"/>
+                            <field name="igst"/> -->
                         </group>
                     </group>
                 </page>
