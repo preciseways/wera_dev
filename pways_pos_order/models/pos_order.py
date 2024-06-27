@@ -216,78 +216,79 @@ class PosOrder(models.Model):
 
         # Populate items
             # for rec in product.taxes_id:
-        for product in pos_products:
-            print("rec----------------", product)
-            print("rec----------------", product.taxes_id)
-            if product.taxes_id:
-                cgst = None
-                igst = None
-                sgst = None
-                for rec in product.taxes_id:
-                    if rec.amount_type == 'group':
-                        found_cgst = False  # Initialize a flag for CGST presence
-                        for x in rec.children_tax_ids:
-                            print('x-------------', x.amount)
-                            print('x-------------', x.name)
-                            if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
-                                cgst = x.amount
-                            if 'SGST' in x.name:
-                                sgst = x.amount
-                    if rec.amount_type == 'fixed':
-                        igst = rec.amount
-                gst = {
-                    "igst": igst,
-                    "cgst": cgst,
-                    "sgst": sgst,
-                    "inclusive": False,
-                    "gst_liability": product.gst_liability
-                }
-            else:
-                gst = None
-            print("gst--------------------------",gst)
+        if pos_products:
+            for product in pos_products:
+                print("rec----------------", product)
+                print("rec----------------", product.taxes_id)
+                if product.taxes_id:
+                    cgst = None
+                    igst = None
+                    sgst = None
+                    for rec in product.taxes_id:
+                        if rec.amount_type == 'group':
+                            found_cgst = False  # Initialize a flag for CGST presence
+                            for x in rec.children_tax_ids:
+                                print('x-------------', x.amount)
+                                print('x-------------', x.name)
+                                if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
+                                    cgst = x.amount
+                                if 'SGST' in x.name:
+                                    sgst = x.amount
+                        if rec.amount_type == 'fixed':
+                            igst = rec.amount
+                    gst = {
+                        "igst": igst,
+                        "cgst": cgst,
+                        "sgst": sgst,
+                        "inclusive": False,
+                        "gst_liability": product.gst_liability
+                    }
+                else:
+                    gst = None
+                print("gst--------------------------",gst)
 
 
-            if product.categ_id.parent_id:
-                main_categorie_id = product.categ_id.parent_id.id
-                sub_category_id = product.categ_id.id
-            else:
-                main_categorie_id = product.categ_id.id
-                sub_category_id = None
-            category_structure["menu"]["entity"]["items"].append({
-                "id": product.id,  # Ensure id is a string
-                "category_id": str(main_categorie_id),  # Ensure category_id is a string
-                "sub_category_id": str(main_categorie_id),
-                "name": product.name,
-                "is_veg": product.is_veg,
-                "description": product.description or "",
-                "price": str(product.list_price),  # Ensure price is a string
-                "gst_details": gst,
-                "packing_charges": str(product.packing_charges) or "0",  # Ensure packing_charges is a string
-                "enable": 1 if product.enable else 0,
-                "in_stock": 1 if product.in_stock else 0,
-                "addon_free_limit": -1,
-                "addon_limit": -1,
-                "image_url": product.image_url or "",
-                "item_slots": [],
-                "image_url_swiggy": product.image_url_swiggy or "",
-                "image_url_zomato": product.image_url_zomato or "",
-                "is_goods": False,
-                "variant_groups": [],
-                "addon_groups": [],
-                "pricing_combinations": [],
-                "order": 2,
-                "recommended": False,
-                "catalog_attributes": {
-                    "spice_level": None,
-                    "sweet_level": None,
-                    "gravy_property": None,
-                    "bone_property": None,
-                    "contain_seasonal_ingredients": None,
-                    "accompaniments": None,
-                    "quantity": None,
-                    "serves_how_many": None
-                }
-            })
+                if product.categ_id.parent_id:
+                    main_categorie_id = product.categ_id.parent_id.id
+                    sub_category_id = product.categ_id.id
+                else:
+                    main_categorie_id = product.categ_id.id
+                    sub_category_id = None
+                category_structure["menu"]["entity"]["items"].append({
+                    "id": product.id,  # Ensure id is a string
+                    "category_id": str(main_categorie_id),  # Ensure category_id is a string
+                    "sub_category_id": str(main_categorie_id),
+                    "name": product.name,
+                    "is_veg": product.is_veg,
+                    "description": product.description or "",
+                    "price": str(product.list_price),  # Ensure price is a string
+                    "gst_details": gst,
+                    "packing_charges": str(product.packing_charges) or "0",  # Ensure packing_charges is a string
+                    "enable": 1 if product.enable else 0,
+                    "in_stock": 1 if product.in_stock else 0,
+                    "addon_free_limit": -1,
+                    "addon_limit": -1,
+                    "image_url": product.image_url or "",
+                    "item_slots": [],
+                    "image_url_swiggy": product.image_url_swiggy or "",
+                    "image_url_zomato": product.image_url_zomato or "",
+                    "is_goods": False,
+                    "variant_groups": [],
+                    "addon_groups": [],
+                    "pricing_combinations": [],
+                    "order": 2,
+                    "recommended": False,
+                    "catalog_attributes": {
+                        "spice_level": None,
+                        "sweet_level": None,
+                        "gravy_property": None,
+                        "bone_property": None,
+                        "contain_seasonal_ingredients": None,
+                        "accompaniments": None,
+                        "quantity": None,
+                        "serves_how_many": None
+                    }
+                })
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
         url = self.company_id.menu_creation_url
         print('self company--------------',self.company_id)
