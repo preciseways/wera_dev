@@ -66,7 +66,7 @@
                             <field name="addon_min_limit" />
                             <field name="addon_limit" />
                             <field name="addon_free_limit"/>
-                            <field name="product_ids" widget="many2many_tags"/>
+                            <!-- <field name="product_ids" widget="many2many_tags"/> -->
                         </tree>
                     </field>
                 </page>

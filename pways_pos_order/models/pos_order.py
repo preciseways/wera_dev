@@ -59,7 +59,7 @@ class PosAddonGroup(models.Model):
     addon_limit = fields.Char(string="Addon Limit")
     addon_free_limit = fields.Char(string="Addon Free Limit")
     # addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
-    product_ids = fields.Many2many("product.template")
+    # product_ids = fields.Many2many("product.template")
 
 
 
