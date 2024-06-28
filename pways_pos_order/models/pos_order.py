@@ -292,6 +292,7 @@ class PosOrder(models.Model):
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
         url = self.company_id.menu_creation_url
         print('self company--------------',self.company_id)
+        print("category_structure----------------",category_structure)
         if not url or url == False:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
         response = requests.post(url=url, json=category_structure, headers=headers)
