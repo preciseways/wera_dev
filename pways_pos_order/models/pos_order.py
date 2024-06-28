@@ -215,7 +215,6 @@ class PosOrder(models.Model):
         pos_products = self.env['product.product'].sudo().search([('enable', '=', True)])
 
         # Populate items
-            # for rec in product.taxes_id:
         if pos_products:
             for product in pos_products:
                 print("rec----------------", product)
@@ -226,7 +225,6 @@ class PosOrder(models.Model):
                     sgst = None
                     for rec in product.taxes_id:
                         if rec.amount_type == 'group':
-                            found_cgst = False  # Initialize a flag for CGST presence
                             for x in rec.children_tax_ids:
                                 print('x-------------', x.amount)
                                 print('x-------------', x.name)
@@ -245,8 +243,7 @@ class PosOrder(models.Model):
                     }
                 else:
                     gst = None
-                print("gst--------------------------",gst)
-
+                print("gst--------------------------", gst)
 
                 if product.categ_id.parent_id:
                     main_categorie_id = product.categ_id.parent_id.id
@@ -289,15 +286,21 @@ class PosOrder(models.Model):
                         "serves_how_many": None
                     }
                 })
-        headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json","Accept": "application/json"}
+
+        # Set items to None if empty
+        if not category_structure["menu"]["entity"]["items"]:
+            category_structure["menu"]["entity"]["items"] = None
+
+        headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json", "Accept": "application/json"}
         url = self.company_id.menu_creation_url
-        print('self company--------------',self.company_id)
-        print("category_structure----------------",category_structure)
+        print('self company--------------', self.company_id)
+        print("category_structure----------------", category_structure)
         if not url or url == False:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
         response = requests.post(url=url, json=category_structure, headers=headers)
-        print("response------------------",response)
+        print("response------------------", response)
         return category_structure
+
 
     def action_auto_accept(self):
         today = datetime.now()
