@@ -68,7 +68,7 @@
                             <field name="addon_free_limit"/>
                             <field name="order"/>
                             <button name="action_open_form" 
-                                icon="fa-list" context="{'default_id': active_id}" type="object" /> 
+                                icon="fa-list" title="Product" context="{'default_id': active_id}" type="object" /> 
                         </tree>
                     </field>
                 </page>

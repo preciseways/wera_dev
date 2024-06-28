@@ -242,6 +242,28 @@ class PosOrder(models.Model):
                         }
                         if addon_group.addons_product_ids:
                             for addon_product in addon_group.addons_product_ids:
+                                if addon_product.taxes_id:
+                                    cgst = None
+                                    igst = None
+                                    sgst = None
+                                    for rec in addon_product.taxes_id:
+                                        if rec.amount_type == 'group':
+                                            for x in rec.children_tax_ids:
+                                                if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
+                                                    cgst = x.amount
+                                                if 'SGST' in x.name:
+                                                    sgst = x.amount
+                                        if rec.amount_type == 'fixed':
+                                            igst = rec.amount
+                                    gst = {
+                                        "igst": igst,
+                                        "cgst": cgst,
+                                        "sgst": sgst,
+                                        "inclusive": False,
+                                        "gst_liability": None
+                                    }
+                                else:
+                                    gst = None
                                 addon_group_dict["addons"].append({
                                     "id": str(addon_product.id) ,
                                     "name": addon_product.product_name,
@@ -250,7 +272,7 @@ class PosOrder(models.Model):
                                     "in_stock": addon_product.in_stock,
                                     "order": addon_product.order if addon_product.order else None,
                                     "is_default": addon_product.is_default if addon_product.is_default else None,
-                                    "gst_details": None  # Add GST details if applicable
+                                    "gst_details": gst  # Add GST details if applicable
                                 })
                         addons.append(addon_group_dict)
 
