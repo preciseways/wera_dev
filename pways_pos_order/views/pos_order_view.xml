@@ -59,14 +59,16 @@
                 </page>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
-                <page name="addon_group" string="Adddon Group">
+                <page name="addon_group" string="Addon Group">
                     <field name="addons_ids" widget="one2many">
-                        <tree string="Variants" editable="bottom">
+                        <tree string="Addon Groups" editable="bottom">
                             <field name="name" />
                             <field name="addon_min_limit" />
                             <field name="addon_limit" />
                             <field name="addon_free_limit"/>
-                            <!-- <field name="product_ids" widget="many2many_tags"/> -->
+                            <field name="order"/>
+                            <button name="action_open_form" 
+                                icon="fa-list" context="{'default_id': active_id}" type="object" /> 
                         </tree>
                     </field>
                 </page>

@@ -58,20 +58,29 @@ class PosAddonGroup(models.Model):
     addon_min_limit = fields.Char(string="Addon Min Limit")
     addon_limit = fields.Char(string="Addon Limit")
     addon_free_limit = fields.Char(string="Addon Free Limit")
-    # addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
-    # product_ids = fields.Many2many("product.template")
+    addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
+    order = fields.Integer(string="Order")
 
+    def action_open_form(self):
+        action = self.env.ref("pways_pos_order.action_addon_group_product_wizard").read()[0]
+        action['res_id'] = self.id
+        return action
+        
+    def action_submit(self):
+        return True
 
+class PosAddonGroup(models.Model):
+    _name = 'addon.group.product'
 
-# class PosAddonGroup(models.Model):
-#     _name = 'addon.group.product'
-#     _rec_name = 'product_id'
+    addon_product_id = fields.Many2one('addon.group')
+    product_name = fields.Char(string="Product Name")
+    is_veg = fields.Boolean(string="Is Veg")
+    in_stock = fields.Boolean(string="In Stock")
+    is_default = fields.Boolean(string="Is Default")
+    order = fields.Integer(string="order")
+    price = fields.Float(string="Price")
+    taxes_id = fields.Many2many('account.tax')
 
-#     addon_product_id = fields.Many2one('addon.group')
-#     product_ids = fields.Many2many("product.template")
-    # is_veg = fields.Boolean(string="Is Veg")
-    # in_stock = fields.Boolean(string="In Stock")
-    # is_default = fields.Boolean(string="Is Default")
 
 class PosSession(models.Model):
     _inherit = 'pos.session'

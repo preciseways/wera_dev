@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_pos_order_reject_wizard,access_pos_order_reject_wizard,model_pos_order_reject_wizard,base.group_user,1,1,1,1
 access_pos_order_connect_wizard,access_pos_order_connect_wizard,model_pos_order_connect_wizard,base.group_user,1,1,1,1
 access_addon_group,access_addon_group,model_addon_group,base.group_user,1,1,1,1
+access_addon_group_product,access_addon_group_product,model_addon_group_product,base.group_user,1,1,1,1
