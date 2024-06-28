@@ -65,7 +65,7 @@ class PosAddonGroup(models.Model):
         action = self.env.ref("pways_pos_order.action_addon_group_product_wizard").read()[0]
         action['res_id'] = self.id
         return action
-        
+
     def action_submit(self):
         return True
 
@@ -228,6 +228,32 @@ class PosOrder(models.Model):
             for product in pos_products:
                 print("rec----------------", product)
                 print("rec----------------", product.taxes_id)
+                addons = []
+                if product.addons_ids:
+                    for addon_group in product.addons_ids:
+                        addon_group_dict = {
+                            "id": addon_group.id,
+                            "name": addon_group.name,
+                            "addon_free_limit": addon_group.addon_free_limit if addon_group.addon_free_limit  else None,
+                            "addon_limit": addon_group.addon_limit if addon_group.addon_limit else None,
+                            "addon_min_limit": addon_group.addon_min_limit if addon_group.addon_min_limit else None,
+                            "order": None,
+                            "addons": []
+                        }
+                        if addon_group.addons_product_ids:
+                            for addon_product in addon_group.addons_product_ids:
+                                addon_group_dict["addons"].append({
+                                    "id": str(addon_product.id) ,
+                                    "name": addon_product.product_name,
+                                    "price": int(addon_product.price),
+                                    "is_veg": addon_product.is_veg,
+                                    "in_stock": addon_product.in_stock,
+                                    "order": addon_product.order if addon_product.order else None,
+                                    "is_default": addon_product.is_default if addon_product.is_default else None,
+                                    "gst_details": None  # Add GST details if applicable
+                                })
+                        addons.append(addon_group_dict)
+
                 if product.taxes_id:
                     cgst = None
                     igst = None
@@ -235,8 +261,6 @@ class PosOrder(models.Model):
                     for rec in product.taxes_id:
                         if rec.amount_type == 'group':
                             for x in rec.children_tax_ids:
-                                print('x-------------', x.amount)
-                                print('x-------------', x.name)
                                 if 'CGST' in x.name:  # Check if the tax name contains 'CGST'
                                     cgst = x.amount
                                 if 'SGST' in x.name:
@@ -280,7 +304,7 @@ class PosOrder(models.Model):
                     "image_url_zomato": product.image_url_zomato or "",
                     "is_goods": False,
                     "variant_groups": [],
-                    "addon_groups": [],
+                    "addon_groups": addons,
                     "pricing_combinations": [],
                     "order": 2,
                     "recommended": False,
@@ -303,9 +327,10 @@ class PosOrder(models.Model):
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json", "Accept": "application/json"}
         url = self.company_id.menu_creation_url
         print('self company--------------', self.company_id)
-        print("category_structure----------------", category_structure)
+        print("category_structure----------------", json.dumps(category_structure, indent=2))
         if not url or url == False:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
+        print("response---------------")
         response = requests.post(url=url, json=category_structure, headers=headers)
         print("response------------------", response)
         return category_structure
