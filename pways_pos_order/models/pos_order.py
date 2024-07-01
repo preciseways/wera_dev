@@ -319,8 +319,8 @@ class PosOrder(models.Model):
                     "packing_charges": str(product.packing_charges) or "0",  # Ensure packing_charges is a string
                     "enable": 1 if product.enable else 0,
                     "in_stock": 1 if product.in_stock else 0,
-                    "addon_free_limit": if product.addon_free_limit else "",
-                    "addon_limit": if product.addon_limit else "",
+                    "addon_free_limit": product.addon_free_limit if product.addon_free_limit else "",
+                    "addon_limit": product.addon_limit if product.addon_limit else "",
                     "addon_min_limit": product.addon_min_limit or ""
                     "image_url": product.image_url or "",
                     "item_slots": [],
