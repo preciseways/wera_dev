@@ -321,7 +321,7 @@ class PosOrder(models.Model):
                     "in_stock": 1 if product.in_stock else 0,
                     "addon_free_limit": product.addon_free_limit if product.addon_free_limit else "",
                     "addon_limit": product.addon_limit if product.addon_limit else "",
-                    "addon_min_limit": product.addon_min_limit or ""
+                    "addon_min_limit": product.addon_min_limit or "",
                     "image_url": product.image_url or "",
                     "item_slots": [],
                     "image_url_swiggy": product.image_url_swiggy or "",
