@@ -39,6 +39,7 @@
                             <field name="is_veg"/>
                             <field name="in_stock"/>
                             <field name="enable"/>
+                            <field name="addon_min_limit"/>
                             <field name="addon_free_limit"/>
                             <field name="addon_limit"/>
                         </group>
