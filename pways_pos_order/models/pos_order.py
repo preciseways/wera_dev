@@ -36,7 +36,8 @@ class ProductTemplate(models.Model):
     cgst = fields.Float(string="CGST Tax")
     igst = fields.Float(string="IGST Tax")
     sgst = fields.Float(string="SGST Tax")
-    addons_ids = fields.One2many('addon.group','addon_group_id')
+    # addons_ids = fields.One2many('addon.group','addon_group_id')
+    addons_group_ids = fields.Many2many('addon.group')
     gst_liability = fields.Char(string="GST Liability")
     inclusive = fields.Boolean(string="Inclusive")
     packing_charges = fields.Float(string="Packing Charge")
@@ -62,13 +63,6 @@ class PosAddonGroup(models.Model):
     addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
     order = fields.Integer(string="Order")
 
-    def action_open_form(self):
-        action = self.env.ref("pways_pos_order.action_addon_group_product_wizard").read()[0]
-        action['res_id'] = self.id
-        return action
-
-    def action_submit(self):
-        return True
 
 class PosAddonGroup(models.Model):
     _name = 'addon.group.product'
@@ -230,8 +224,8 @@ class PosOrder(models.Model):
                 print("rec----------------", product)
                 print("rec----------------", product.taxes_id)
                 addons = []
-                if product.addons_ids:
-                    for addon_group in product.addons_ids:
+                if product.addons_group_ids:
+                    for addon_group in product.addons_group_ids:
                         addon_group_dict = {
                             "id": addon_group.id,
                             "name": addon_group.name,

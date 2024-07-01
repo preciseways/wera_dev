@@ -1,19 +1,19 @@
 <odoo>
-    <record id="addon_group_product_form_view" model="ir.ui.view">
-        <field name="name">addon.group.form</field>
+	<record id="view_wera_addon_group_form" model="ir.ui.view">
+        <field name="model">addon.group.form</field>
         <field name="model">addon.group</field>
         <field name="arch" type="xml">
-            <form>
+        	<form>
                 <sheet>   
                     <group>
                         <group>
-                            <field name="name" readonly="1"/>
-                            <field name="addon_min_limit" readonly="1"/>
-                            <field name="addon_limit" readonly="1"/>
+                            <field name="name"/>
+                            <field name="addon_min_limit"/>
+                            <field name="addon_limit"/>
                         </group>
                         <group>
-                            <field name="addon_free_limit" readonly="1"/>
-                            <field name="order" readonly="1"/>
+                            <field name="addon_free_limit"/>
+                            <field name="order"/>
                         </group>
                     </group>
                     <notebook>
@@ -32,18 +32,21 @@
                         </page>
                     </notebook>
                 </sheet>
-                <footer>
-                    <button name="action_submit" string="Submit" type="object" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
-                </footer>
-            </form>
+        	</form>
         </field>
     </record>
-    <record id="action_addon_group_product_wizard" model="ir.actions.act_window">
-        <field name="name">Addons Group Product</field>
-        <field name="type">ir.actions.act_window</field> 
-        <field name="res_model">addon.group</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
+    
+	<record id="view_wera_addon_group_tree" model="ir.ui.view">
+        <field name="model">addon.group.tree</field>
+        <field name="model">addon.group</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="addon_min_limit"/>
+                <field name="addon_limit"/>
+                <field name="addon_free_limit"/>
+                <field name="order"/>
+            </tree>
+        </field>
     </record>
 </odoo>
