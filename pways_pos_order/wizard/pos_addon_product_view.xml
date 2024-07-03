@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_addon_group_product_wizard_form" model="ir.ui.view">
+        <field name="name">addon.group.product.wizard.form</field>
+        <field name="model">addon.group.product.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Addon Group Product Wizard">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="addon_min_limit"/>
+                        </group>
+                        <group>
+                            <field name="addon_limit"/>
+                            <field name="addon_free_limit"/>
+                            <field name="order"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Addons Product">
+                            <field name="addons_product_ids" mode="tree" readonly="1">
+                                <tree>
+                                    <field name="product_name"/>
+                                    <field name="is_veg"/>
+                                    <field name="in_stock"/>
+                                    <field name="is_default"/>
+                                    <field name="order"/>
+                                    <field name="price"/>
+                                    <field name="taxes_id" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_addon_group_product_wizard" model="ir.actions.act_window">
+        <field name="name">Addon Group Product Wizard</field>
+        <field name="res_model">addon.group.product.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

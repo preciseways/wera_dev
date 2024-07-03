@@ -63,7 +63,7 @@ class PosAddonGroup(models.Model):
     addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
     order = fields.Integer(string="Order")
 
-
+        
 class PosAddonGroup(models.Model):
     _name = 'addon.group.product'
 

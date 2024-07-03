@@ -52,9 +52,6 @@
                             <field name="is_goods"/>
                             <field name="inclusive"/>
                             <field name="gst_liability"/>
-                <!--             <field name="cgst"/>
-                            <field name="sgst"/>
-                            <field name="igst"/> -->
                         </group>
                     </group>
                 </page>
@@ -69,7 +66,7 @@
                             <field name="addon_limit" />
                             <field name="addon_free_limit"/>
                             <field name="order"/>
-                            <!-- <button name="action_open_form" icon="fa-list" title="Product" context="{'default_id': addon_group_id}" type="object" />  -->
+                            <button name="%(pways_pos_order.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
                         </tree>
                     </field>
                 </page>
