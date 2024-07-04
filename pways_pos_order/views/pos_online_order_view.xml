@@ -145,6 +145,18 @@
                         </group>
                         <div class="clearfix"/>
                     </group>
+                    <group string="Addon Product" name="addon_product">
+                        <group>
+                            <field name="order_addons_ids" colspan="4" nolabel="1">
+                                <tree string="Addon Product" style='width: 90px;'>
+                                    <field name="addon_id" invisible="1" />
+                                    <field name="name"/>
+                                    <field name="price"/>
+                                    <field name="discount"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
                     <group string="Payments" name="payments">
                         <group>
                             <field name="payment_ids" colspan="4" nolabel="1">

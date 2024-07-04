@@ -5,3 +5,4 @@ access_addon_group,access_addon_group,model_addon_group,base.group_user,1,1,1,1
 access_addon_group_product,access_addon_group_product,model_addon_group_product,base.group_user,1,1,1,1
 access_addon_group_product_wizard,access.addon.group.product.wizard,model_addon_group_product_wizard,base.group_user,1,1,1,1
 access_addon_group_product_wizard_line,access.addon.group.product.wizard.line,model_addon_group_product_wizard_line,base.group_user,1,1,1,1
+access_order_addons,access_order_addons,model_order_addons,base.group_user,1,1,1,1

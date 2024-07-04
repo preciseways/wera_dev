@@ -36,7 +36,6 @@ class ProductTemplate(models.Model):
     cgst = fields.Float(string="CGST Tax")
     igst = fields.Float(string="IGST Tax")
     sgst = fields.Float(string="SGST Tax")
-    # addons_ids = fields.One2many('addon.group','addon_group_id')
     addons_group_ids = fields.Many2many('addon.group')
     gst_liability = fields.Char(string="GST Liability")
     inclusive = fields.Boolean(string="Inclusive")
@@ -75,6 +74,15 @@ class PosAddonGroup(models.Model):
     order = fields.Integer(string="order")
     price = fields.Float(string="Price")
     taxes_id = fields.Many2many('account.tax')
+
+class PosOrderAddons(models.Model):
+    _inherit = 'order.addons'
+
+    order_addon = fields.Many2one('pos.order')
+    addon_id = fields.Many2one('addon.group.product')
+    name = fields.Char(string="Product Name")
+    price = fields.Float(string="Price")
+    discount = fields.Float(string="Discount")
 
 
 class PosSession(models.Model):
@@ -159,6 +167,8 @@ class PosOrder(models.Model):
     rider_contact = fields.Integer(string="Rider Number")
     rider_status = fields.Char(string="Rider Status")
     time_to_arrive = fields.Integer(string="Time to arrive")
+    order_addons_ids = fields.One2many('order.addons','order_addon')
+
 
     def pos_menu_creation(self):
         print("menu creation------------------------------------------------------")
