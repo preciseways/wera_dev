@@ -35,15 +35,6 @@ class PwaysPOSOrder(http.Controller):
         pos_session = request.env['pos.session'].sudo().search([('custom_session','=',True)])
         order_line = []
         product_id = False
-        addon_line = []
-        for addon in data_in_json['addons']:
-            addon_val = {
-            'addon_id': int(addon.addon_id),
-            'name': addon.name,
-            'price': addon.price,
-            'discount': addon.discount
-            }
-            addon_line.append((0,0, addon_val))
         for item in data_in_json['order_items']:
             variant_line = []
             for x in item['variants']:
@@ -59,6 +50,15 @@ class PwaysPOSOrder(http.Controller):
             print("item id----------------------------------", item['wera_item_id'])
             print("item id----------------------------------", item['item_name'])
             print("product--------------------id-----------",product_id)
+            addon_line = []
+            for addon in data_in_json['addons']:
+                addon_val = {
+                'addon_id': int(addon.addon_id),
+                'name': addon.name,
+                'price': addon.price,
+                'discount': addon.discount
+                }
+                addon_line.append((0,0, addon_val))
             line_val = {
                 'product_id': product_id.id or False,
                 'full_product_name': item['item_name'] or False,
