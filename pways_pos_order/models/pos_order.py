@@ -76,7 +76,7 @@ class PosAddonGroup(models.Model):
     taxes_id = fields.Many2many('account.tax')
 
 class PosOrderAddons(models.Model):
-    _inherit = 'order.addons'
+    _name = 'order.addons'
 
     order_addon = fields.Many2one('pos.order')
     addon_id = fields.Many2one('addon.group.product')

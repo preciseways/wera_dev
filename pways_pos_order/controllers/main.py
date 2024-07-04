@@ -36,7 +36,7 @@ class PwaysPOSOrder(http.Controller):
         order_line = []
         product_id = False
         addon_line = []
-        for addon in data_in_json['addons']
+        for addon in data_in_json['addons']:
             addon_val = {
             'addon_id': int(addon.addon_id),
             'name': addon.name,
