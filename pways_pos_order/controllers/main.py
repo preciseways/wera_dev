@@ -53,10 +53,10 @@ class PwaysPOSOrder(http.Controller):
             addon_line = []
             for addon in item['addons']:
                 addon_val = {
-                'addon_id': int(addon.addon_id),
-                'name': addon.name,
-                'price': addon.price,
-                'discount': addon.discount
+                'addon_id': addon['addon_id'],
+                'name': addon['name'],
+                'price': addon['price'],
+                'discount': addon['discount']
                 }
                 addon_line.append((0,0, addon_val))
             line_val = {
