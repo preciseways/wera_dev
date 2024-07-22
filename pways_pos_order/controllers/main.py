@@ -25,42 +25,44 @@ class PwaysPOSOrder(http.Controller):
         return json.dumps({"code":1,"msg":'',"details":[]})  
 
 
-    #order creation 
+        #order creation 
     @http.route('/post/order', type='json', auth='public')
     def set_order_value(self):
         print("Data------Order Creation-------Function Called---------")
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
-        print("Data------Order Creation----------------",data_in_json)
-        pos_session = request.env['pos.session'].sudo().search([('custom_session','=',True)])
+        print("Data------Order Creation----------------", data_in_json)
+        pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
-        product_id = False
         addon_line = []
-        if data_in_json['addons']:
+        
+        # Check if 'addons' key exists in the data
+        if 'addons' in data_in_json:
             for addon in data_in_json['addons']:
                 addon_val = {
-                'addon_id': int(addon.addon_id),
-                'name': addon.name,
-                'price': addon.price,
-                'discount': addon.discount
+                    'addon_id': int(addon['addon_id']),
+                    'name': addon['name'],
+                    'price': addon['price'],
+                    'discount': addon['discount']
                 }
-                addon_line.append((0,0, addon_val))
-        if data_in_json['order_items']:
+                addon_line.append((0, 0, addon_val))
+        
+        if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
                 variant_line = []
                 for x in item['variants']:
-                    var_val= {
-                    'variant_id': x['variant_id'],
-                    'variant_name': x['variant_name'],
-                    'size_id': x['size_id'],
-                    'size_name': x['size_name'],
-                    'price': x['price'],
+                    var_val = {
+                        'variant_id': x['variant_id'],
+                        'variant_name': x['variant_name'],
+                        'size_id': x['size_id'],
+                        'size_name': x['size_name'],
+                        'price': x['price'],
                     }
-                    variant_line.append((0,0, var_val))
-                product_id = request.env['product.product'].sudo().search([('id','=', item['item_id'])])
+                    variant_line.append((0, 0, var_val))
+                product_id = request.env['product.product'].sudo().search([('id', '=', item['item_id'])])
                 print("item id----------------------------------", item['wera_item_id'])
                 print("item id----------------------------------", item['item_name'])
-                print("product--------------------id-----------",product_id)
+                print("product--------------------id-----------", product_id)
                 line_val = {
                     'product_id': product_id.id or False,
                     'full_product_name': item['item_name'] or False,
@@ -70,14 +72,15 @@ class PwaysPOSOrder(http.Controller):
                     'price_subtotal_incl': item['subtotal'] or False
                 }
                 order_line.append((0, 0, line_val))
-        values= {
-            'order_id': data_in_json['order_id'] or False,
+        
+        values = {
+            'order_id': data_in_json.get('order_id') or False,
             'pos_order': True,
             'lines': order_line,
             'partner_id': 1,
             'session_id': pos_session.id,
-            'amount_tax': data_in_json['packaging_cgst_percent'] or False,
-            'amount_total': data_in_json['gross_amount'] or False,
+            'amount_tax': data_in_json.get('packaging_cgst_percent') or False,
+            'amount_total': data_in_json.get('gross_amount') or False,
             'amount_paid': 0,
             'amount_return': 0,
             'wera_order_id': data_in_json.get('external_order_id'),
@@ -86,27 +89,29 @@ class PwaysPOSOrder(http.Controller):
             'order_from': data_in_json.get('order_from'),
             'enable_delivery': data_in_json.get('enable_delivery'),
             'payment_mode': data_in_json.get('payment_mode'),
-            'customer_name': data_in_json['customer_details']['name'] or False,
-            'customer_phone_number': data_in_json['customer_details']['phone_number'] or False,
-            'order_otp' : data_in_json['order_otp'] or False,
-            'is_auto_accepted': data_in_json['is_auto_accepted'] or False,
-            'is_accepted': data_in_json['is_accepted'] or False,
-            'password': data_in_json['password'] or False,
-            'order_otp': data_in_json['order_otp'] or False,
+            'customer_name': data_in_json['customer_details'].get('name') or False,
+            'customer_phone_number': data_in_json['customer_details'].get('phone_number') or False,
+            'order_otp': data_in_json.get('order_otp') or False,
+            'is_auto_accepted': data_in_json.get('is_auto_accepted') or False,
+            'is_accepted': data_in_json.get('is_accepted') or False,
+            'password': data_in_json.get('password') or False,
+            'order_otp': data_in_json.get('order_otp') or False,
             'company_id': 1,
             'pricelist_id': 1,
             'order_addons_ids': addon_line
         }
-        order_created = request.env['pos.order'].sudo().search([('order_id','=',data_in_json.get('order_id'))])
+        
+        order_created = request.env['pos.order'].sudo().search([('order_id', '=', data_in_json.get('order_id'))])
         if order_created:
             order_created.write(values)
-            response = json.dumps({'state':200, 'message': 'Successful','Order_id': order_created.order_id})
+            response = json.dumps({'state': 200, 'message': 'Successful', 'Order_id': order_created.order_id})
         else:
             pos_order = request.env['pos.order'].sudo().create(values)
-            response = json.dumps({'state':200, 'message': 'Successful','Order_id': pos_order.order_id})
+            response = json.dumps({'state': 200, 'message': 'Successful', 'Order_id': pos_order.order_id})
             if not pos_order:
-                response = json.dumps({"code": 2 ,"message": "Error"})
+                response = json.dumps({"code": 2, "message": "Error"})
         return response
+
 
     #action pos order cancel
     @http.route('/order/cancel' ,type='json', auth='public')
