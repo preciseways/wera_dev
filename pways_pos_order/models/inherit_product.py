@@ -51,6 +51,8 @@ class ProductTemplate(models.Model):
     order = fields.Integer(string="Order")
     preparation_time = fields.Integer(string="Preparation Time")
     slot_ids = fields.One2many('item.slots','slot_id')
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, ondelete='cascade')
+
 
     def fetch_categories(self):
         pos_categories = self.env['product.category'].sudo().search([])
