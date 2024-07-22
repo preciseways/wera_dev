@@ -74,7 +74,6 @@ class PwaysPOSOrder(http.Controller):
                             'discount': addon['discount']
                         }
                         addons_val.append((0, 0, addon_val))
-                line_val['addons'] = addon_line
         
         values = {
             'order_id': data_in_json.get('order_id') or False,
