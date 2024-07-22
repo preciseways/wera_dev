@@ -59,7 +59,7 @@ class PwaysPOSOrder(http.Controller):
                     'price_unit': item['item_unit_price'] or False,
                     'price_subtotal': item['subtotal'] or False,
                     'price_subtotal_incl': item['subtotal'] or False,
-                    'variants': variant_line
+                    # 'variants': variant_line
                 }
 
                 if 'addons' in item:

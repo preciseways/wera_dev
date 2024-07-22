@@ -133,7 +133,7 @@ class ProductTemplate(models.Model):
 
                 for value in attribute_line.product_template_value_ids:
                     variant = {
-                        "id": str(value.id),
+                        "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
                         "price": int(value.price_extra),
                         "default": False,
