@@ -36,38 +36,40 @@ class PwaysPOSOrder(http.Controller):
         order_line = []
         product_id = False
         addon_line = []
-        for addon in data_in_json['addons']:
-            addon_val = {
-            'addon_id': int(addon.addon_id),
-            'name': addon.name,
-            'price': addon.price,
-            'discount': addon.discount
-            }
-            addon_line.append((0,0, addon_val))
-        for item in data_in_json['order_items']:
-            variant_line = []
-            for x in item['variants']:
-                var_val= {
-                'variant_id': x['variant_id'],
-                'variant_name': x['variant_name'],
-                'size_id': x['size_id'],
-                'size_name': x['size_name'],
-                'price': x['price'],
+        if data_in_json['addons']:
+            for addon in data_in_json['addons']:
+                addon_val = {
+                'addon_id': int(addon.addon_id),
+                'name': addon.name,
+                'price': addon.price,
+                'discount': addon.discount
                 }
-                variant_line.append((0,0, var_val))
-            product_id = request.env['product.product'].sudo().search([('id','=', item['item_id'])])
-            print("item id----------------------------------", item['wera_item_id'])
-            print("item id----------------------------------", item['item_name'])
-            print("product--------------------id-----------",product_id)
-            line_val = {
-                'product_id': product_id.id or False,
-                'full_product_name': item['item_name'] or False,
-                'qty': item['item_quantity'] or False,
-                'price_unit': item['item_unit_price'] or False,
-                'price_subtotal': item['subtotal'] or False,
-                'price_subtotal_incl': item['subtotal'] or False
-            }
-            order_line.append((0, 0, line_val))
+                addon_line.append((0,0, addon_val))
+        if data_in_json['order_items']:
+            for item in data_in_json['order_items']:
+                variant_line = []
+                for x in item['variants']:
+                    var_val= {
+                    'variant_id': x['variant_id'],
+                    'variant_name': x['variant_name'],
+                    'size_id': x['size_id'],
+                    'size_name': x['size_name'],
+                    'price': x['price'],
+                    }
+                    variant_line.append((0,0, var_val))
+                product_id = request.env['product.product'].sudo().search([('id','=', item['item_id'])])
+                print("item id----------------------------------", item['wera_item_id'])
+                print("item id----------------------------------", item['item_name'])
+                print("product--------------------id-----------",product_id)
+                line_val = {
+                    'product_id': product_id.id or False,
+                    'full_product_name': item['item_name'] or False,
+                    'qty': item['item_quantity'] or False,
+                    'price_unit': item['item_unit_price'] or False,
+                    'price_subtotal': item['subtotal'] or False,
+                    'price_subtotal_incl': item['subtotal'] or False
+                }
+                order_line.append((0, 0, line_val))
         values= {
             'order_id': data_in_json['order_id'] or False,
             'pos_order': True,
