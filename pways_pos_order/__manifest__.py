@@ -7,6 +7,7 @@
     ],
     'data': [ 
             'security/ir.model.access.csv',
+            'data/weekday_data.xml',
             'wizard/pos_order_rejection_view.xml',
             'wizard/pos_partner_contact_view.xml',
             'wizard/pos_addon_product_view.xml',

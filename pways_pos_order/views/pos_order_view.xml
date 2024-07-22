@@ -31,6 +31,32 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']" position="after">
+                <page name="addon_group" string="Addon Group">
+                    <field name="addons_group_ids">
+                        <tree string="Addon Groups" editable="bottom">
+                            <field name="addon_group_id" invisible="1"/>
+                            <field name="name" />
+                            <field name="addon_min_limit" />
+                            <field name="addon_limit" />
+                            <field name="addon_free_limit"/>
+                            <field name="order"/>
+                            <button name="%(pways_pos_order.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
+                        </tree>
+                    </field>
+                </page>
+            </xpath>            
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="slot_group" string="Item Slots">
+                    <field name="slot_ids">
+                        <tree string="Item Slots" editable="bottom">
+                            <field name="start_hour" widget="float_time"/>
+                            <field name="end_hour" widget="float_time"/>
+                            <field name="week_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/> 
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
                 <page name="wera_product_info" string="Wera Product Info">
                     <group>
                         <group>
@@ -54,21 +80,6 @@
                             <field name="gst_liability"/>
                         </group>
                     </group>
-                </page>
-            </xpath>
-            <xpath expr="//page[@name='general_information']" position="after">
-                <page name="addon_group" string="Addon Group">
-                    <field name="addons_group_ids">
-                        <tree string="Addon Groups" editable="bottom">
-                            <field name="addon_group_id" invisible="1"/>
-                            <field name="name" />
-                            <field name="addon_min_limit" />
-                            <field name="addon_limit" />
-                            <field name="addon_free_limit"/>
-                            <field name="order"/>
-                            <button name="%(pways_pos_order.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
-                        </tree>
-                    </field>
                 </page>
             </xpath>
         </field>

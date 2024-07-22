@@ -35,6 +35,15 @@ class PwaysPOSOrder(http.Controller):
         pos_session = request.env['pos.session'].sudo().search([('custom_session','=',True)])
         order_line = []
         product_id = False
+        addon_line = []
+        for addon in data_in_json['addons']:
+            addon_val = {
+            'addon_id': int(addon.addon_id),
+            'name': addon.name,
+            'price': addon.price,
+            'discount': addon.discount
+            }
+            addon_line.append((0,0, addon_val))
         for item in data_in_json['order_items']:
             variant_line = []
             for x in item['variants']:
@@ -50,15 +59,6 @@ class PwaysPOSOrder(http.Controller):
             print("item id----------------------------------", item['wera_item_id'])
             print("item id----------------------------------", item['item_name'])
             print("product--------------------id-----------",product_id)
-            addon_line = []
-            for addon in item['addons']:
-                addon_val = {
-                'addon_id': addon['addon_id'],
-                'name': addon['name'],
-                'price': addon['price'],
-                'discount': addon['discount']
-                }
-                addon_line.append((0,0, addon_val))
             line_val = {
                 'product_id': product_id.id or False,
                 'full_product_name': item['item_name'] or False,
@@ -94,40 +94,6 @@ class PwaysPOSOrder(http.Controller):
             'company_id': 1,
             'pricelist_id': 1,
             'order_addons_ids': addon_line
-            # 'total_cgst': data_in_json.get('order_cgst'),
-            # 'total_sgst': data_in_json.get('order_sgst'),
-            # 'order_packaging': data_in_json.get('order_packaging'),
-            # 'order_packaging_cgst': data_in_json.get('order_packaging_cgst'),
-            # 'order_packaging_sgst': data_in_json.get('order_packaging_sgst'),
-            # 'order_packaging_cgst_percent': data_in_json.get('order_packaging_cgst_percent'),
-            # 'order_packaging_sgst_percent': data_in_json.get('order_packaging_sgst_percent'),
-            # 'order_discount': data_in_json.get('discount'),
-            # 'delivery_charge': data_in_json.get('delivery_charge'),
-            # 'customer_email': data_in_json['customer_details']['email'] or False,
-            # 'customer_address': data_in_json['customer_details']['address'] or False,
-            # 'delivery_area': data_in_json['customer_details']['delivery_area'] or False,
-            # 'address_instructions': data_in_json['customer_details']['address_instructions'] or False,
-            # 'wera_item_id': data_in_json.get('wera_item_id'),
-            # 'item_id': data_in_json.get('item_id'),
-            # 'item_name': data_in_json.get('item_name'),
-            # 'item_unit_price': data_in_json.get('item_unit_price'),
-            # 'subtotal': data_in_json.get('subtotal'),
-            # 'discount': data_in_json.get('order_discount'),
-            # 'item_quantity': data_in_json.get('item_quantity'),
-            # 'size_id': data_in_json.get('size_id'),
-            # 'size_name': data_in_json.get('size_name'),
-            # 'size_price': data_in_json.get('price'),
-            # 'size_cgst': data_in_json.get('size_cgst'),
-            # 'size_sgst': data_in_json.get('size_sgst'),
-            # 'size_cgst_percent': data_in_json.get('size_cgst_percent'),
-            # 'size_sgst_percent': data_in_json.get('size_sgst_percent'),
-            # 'addons_id': data_in_json.get('addon_id'),
-            # 'addons_name': data_in_json.get('addon_name'),
-            # 'addons_price': data_in_json.get('addon_price'),
-            # 'addons_cgst': data_in_json.get('addon_cgst'),
-            # 'addons_sgst': data_in_json.get('addon_sgst'),
-            # 'addons_cgst_percent': data_in_json.get('addon_cgst_percent'),
-            # 'addons_sgst_percent': data_in_json.get('addon_sgst_percent')
         }
         order_created = request.env['pos.order'].sudo().search([('order_id','=',data_in_json.get('order_id'))])
         if order_created:
