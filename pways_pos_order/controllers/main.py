@@ -62,7 +62,7 @@ class PwaysPOSOrder(http.Controller):
                     'price_subtotal_incl': item['subtotal'] or False,
                     # 'variants': variant_line
                 }
-
+                order_line.append((0, 0, line_val))
                 if 'addons' in item:
                     print("finded addons---------------------------")
                     # addon_line = []
@@ -74,8 +74,7 @@ class PwaysPOSOrder(http.Controller):
                             'discount': addon['discount']
                         }
                         addons_val.append((0, 0, addon_val))
-                    #     addon_line.append((0, 0, addon_val))
-                    # line_val['addons'] = addon_line
+                line_val['addons'] = addon_line
         
         values = {
             'order_id': data_in_json.get('order_id') or False,
