@@ -205,6 +205,7 @@ class ProductTemplate(models.Model):
         return item_slot
 
     def pos_menu_creation(self):
+        print("self--------------------------",self.company_id)
         category_structure = {
             "merchant_id": "2544",
             "menu": {
