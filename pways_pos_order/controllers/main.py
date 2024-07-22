@@ -101,7 +101,7 @@ class PwaysPOSOrder(http.Controller):
             'password': data_in_json.get('password') or False,
             'order_otp': data_in_json.get('order_otp') or False,
             'company_id': 1,
-            'pricelist_id': 1
+            'pricelist_id': 1,
             'order_addons_ids': addon
         }
         
