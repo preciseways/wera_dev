@@ -34,7 +34,7 @@ class PwaysPOSOrder(http.Controller):
         print("Data------Order Creation----------------", data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
-        addon = []
+        addons_val = []
         
         if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
@@ -73,7 +73,7 @@ class PwaysPOSOrder(http.Controller):
                             'price': addon['price'],
                             'discount': addon['discount']
                         }
-                        addon.append((0, 0, addon_val))
+                        addons_val.append((0, 0, addon_val))
                     #     addon_line.append((0, 0, addon_val))
                     # line_val['addons'] = addon_line
         
@@ -102,7 +102,7 @@ class PwaysPOSOrder(http.Controller):
             'order_otp': data_in_json.get('order_otp') or False,
             'company_id': 1,
             'pricelist_id': 1,
-            'order_addons_ids': addon
+            'order_addons_ids': addons_val
         }
         
         order_created = request.env['pos.order'].sudo().search([('order_id', '=', data_in_json.get('order_id'))])
