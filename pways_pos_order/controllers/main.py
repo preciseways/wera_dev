@@ -34,18 +34,6 @@ class PwaysPOSOrder(http.Controller):
         print("Data------Order Creation----------------", data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
-        addon_line = []
-        
-        # Check if 'addons' key exists in the data
-        if 'addons' in data_in_json:
-            for addon in data_in_json['addons']:
-                addon_val = {
-                    'addon_id': int(addon['addon_id']),
-                    'name': addon['name'],
-                    'price': addon['price'],
-                    'discount': addon['discount']
-                }
-                addon_line.append((0, 0, addon_val))
         
         if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
@@ -59,6 +47,7 @@ class PwaysPOSOrder(http.Controller):
                         'price': x['price'],
                     }
                     variant_line.append((0, 0, var_val))
+                
                 product_id = request.env['product.product'].sudo().search([('id', '=', item['item_id'])])
                 print("item id----------------------------------", item['wera_item_id'])
                 print("item id----------------------------------", item['item_name'])
@@ -69,8 +58,22 @@ class PwaysPOSOrder(http.Controller):
                     'qty': item['item_quantity'] or False,
                     'price_unit': item['item_unit_price'] or False,
                     'price_subtotal': item['subtotal'] or False,
-                    'price_subtotal_incl': item['subtotal'] or False
+                    'price_subtotal_incl': item['subtotal'] or False,
+                    'variants': variant_line
                 }
+
+                if 'addons' in item:
+                    addon_line = []
+                    for addon in item['addons']:
+                        addon_val = {
+                            'addon_id': int(addon['addon_id']),
+                            'name': addon['name'],
+                            'price': addon['price'],
+                            'discount': addon['discount']
+                        }
+                        addon_line.append((0, 0, addon_val))
+                    line_val['addons'] = addon_line
+                
                 order_line.append((0, 0, line_val))
         
         values = {
@@ -97,8 +100,7 @@ class PwaysPOSOrder(http.Controller):
             'password': data_in_json.get('password') or False,
             'order_otp': data_in_json.get('order_otp') or False,
             'company_id': 1,
-            'pricelist_id': 1,
-            'order_addons_ids': addon_line
+            'pricelist_id': 1
         }
         
         order_created = request.env['pos.order'].sudo().search([('order_id', '=', data_in_json.get('order_id'))])
