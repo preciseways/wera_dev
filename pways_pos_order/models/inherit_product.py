@@ -234,7 +234,7 @@ class ProductTemplate(models.Model):
                 "name": product.name,
                 "is_veg": product.is_veg,
                 "description": product.description or "",
-                "price": 0,
+                "price": product.list_price or 0,
                 "gst_details": gst,
                 "packing_charges": str(product.packing_charges) or "0",
                 "enable": 1 if product.enable else 0,
