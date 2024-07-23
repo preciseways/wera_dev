@@ -362,7 +362,8 @@ class PosOrder(models.Model):
             # pos_order = self.env['pos.order'].search([('id','=',self.id)])
             # self.add_payment(data)
             # pos_order.action_pos_order_paid()
-            # pos_order.sudo().write({'is_accepted': True})
+            pos_order.sudo().write({'state': 'paid'})
+            pos_order.sudo().write({'is_accepted': True})
         return True
 
     def action_reject(self):
