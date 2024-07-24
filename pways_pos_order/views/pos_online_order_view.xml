@@ -219,12 +219,14 @@
             <search>
                 <field name="name"/>
                 <field name="date_order"/>
-                <field name="partner_id"/>
+                <field name="partner_id" string="Partner"/>
                 <field name="order_id"/>
                 <field name="order_from" string="Order From"/>
                 <field name="customer_name"/>
-                <field name="state"/>
+                <field name="state" string="State" />
                 <filter string="Order From" name="order_from_filter" domain="[]" context="{'group_by':'order_from'}"/>
+                <filter string="Partner" name="partner_filter" domain="[]" context="{'group_by':'partner_id'}"/>
+                <filter string="State" name="state_filter" domain="[]" context="{'group_by':'state'}"/>
             </search>
         </field>
     </record>
