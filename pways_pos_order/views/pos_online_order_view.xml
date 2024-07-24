@@ -212,6 +212,35 @@
         </field>
     </record>
 
+    <record id="view_pways_online_order_search" model="ir.ui.view">
+        <field name="name">pos.order.search</field>
+        <field name="model">pos.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="date_order"/>
+                <field name="partner_id"/>
+                <field name="order_id"/>
+                <field name="order_from"/>
+                <field name="customer_name"/>
+                <field name="state"/>
+
+                <filter string="Order From" name="order_from_filter" domain="[]" context="{'group_by':'order_from'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for POS Orders with Search View -->
+    <record id="action_pways_pos_online_order_action" model="ir.actions.act_window">
+        <field name="name">Online Order</field>
+        <field name="res_model">pos.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_pways_online_order_tree"/>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_pways_online_order_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_pways_online_order_form')})]"/>
+        <field name="domain">[('pos_order', '!=', False)]</field>
+        <field name="search_view_id" ref="view_pways_online_order_search"/>
+    </record>
+<!-- 
     <record id="action_pways_pos_online_order_action" model="ir.actions.act_window">
         <field name="name">Online Order</field>
         <field name="res_model">pos.order</field>
@@ -220,7 +249,7 @@
         <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_pways_online_order_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_pways_online_order_form')})]"/>
         <field name="domain">[('pos_order', '!=', False)]</field>
     </record>
-
+ -->
     <menuitem id="pways_pos_online_order"
         name="Online Order"
         parent="point_of_sale.menu_point_root"
