@@ -56,11 +56,16 @@ class PwaysPOSOrder(http.Controller):
                 print("product--------------------id-----------", product_id)
                 print("variant--------------------id-----------", product_id.product_variant_ids)
                 print("variant--------------------price---------------------------",variant_price)
-                for rec in product_id.product_variant_ids:
-                    print("product price_extra---------------",rec.price_extra)
-                    if rec.price_extra == variant_price:
-                        print("product name------------------------------",rec.name)
-                        product_id = rec
+                if len(product_id.product_variant_ids)  > 1:
+                    for rec in product_id.product_variant_ids:
+                        print("product price_extra---------------",rec.price_extra)
+                        if rec.price_extra == variant_price:
+                            print("product name------------------------------",rec.name)
+                            product_id = rec
+                        else:
+                            product_id = rec
+                else:
+                    product_id = product_id.product_variant_ids
                 line_val = {
                     'product_id': product_id.id or False,
                     'full_product_name': item['item_name'] or False,
@@ -173,7 +178,6 @@ class PwaysPOSOrder(http.Controller):
         else:
             response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
         return response
-
 
 
 
