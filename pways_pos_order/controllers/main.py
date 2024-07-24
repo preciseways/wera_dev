@@ -31,11 +31,11 @@ class PwaysPOSOrder(http.Controller):
         print("Data------Order Creation-------Function Called---------")
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
-        print("Data------Order Creation----------------", data_in_json)
+        # print("Data------Order Creation----------------", data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
         addons_val = []
-        
+        variant_price = 0
         if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
                 variant_line = []
@@ -48,13 +48,14 @@ class PwaysPOSOrder(http.Controller):
                         'price': x['price'],
                     }
                     variant_line.append((0, 0, var_val))
+                    variant_price = x['price']
                 
                 product_id = request.env['product.template'].sudo().search([('id', '=', item['item_id'])])
                 print("item id----------------------------------", item['wera_item_id'])
                 print("item id----------------------------------", item['item_name'])
                 print("product--------------------id-----------", product_id)
                 print("variant--------------------id-----------", product_id.product_variant_ids)
-                print("variant--------------------price---------------------------",item['variants']['price'])
+                print("variant--------------------price---------------------------",variant_price)
                 line_val = {
                     'product_id': product_id.id or False,
                     'full_product_name': item['item_name'] or False,
