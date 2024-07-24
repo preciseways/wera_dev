@@ -54,6 +54,7 @@ class PwaysPOSOrder(http.Controller):
                 print("item id----------------------------------", item['item_name'])
                 print("product--------------------id-----------", product_id)
                 print("variant--------------------id-----------", product_id.product_variant_ids)
+                print("variant--------------------price---------------------------",item['variants']['price'])
                 line_val = {
                     'product_id': product_id.id or False,
                     'full_product_name': item['item_name'] or False,
