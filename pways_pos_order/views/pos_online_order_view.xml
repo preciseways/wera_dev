@@ -221,10 +221,9 @@
                 <field name="date_order"/>
                 <field name="partner_id"/>
                 <field name="order_id"/>
-                <field name="order_from"/>
+                <field name="order_from" string="Order From"/>
                 <field name="customer_name"/>
                 <field name="state"/>
-
                 <filter string="Order From" name="order_from_filter" domain="[]" context="{'group_by':'order_from'}"/>
             </search>
         </field>
