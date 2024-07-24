@@ -58,6 +58,7 @@ class PwaysPOSOrder(http.Controller):
                 print("variant--------------------price---------------------------",variant_price)
                 for rec in product_id.product_variant_ids:
                     if rec.lst_price == variant_price:
+                        print("product name------------------------------",rec.name)
                         product_id = rec
                 line_val = {
                     'product_id': product_id.id or False,
