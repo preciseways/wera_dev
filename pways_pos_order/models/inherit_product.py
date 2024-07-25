@@ -275,6 +275,7 @@ class ProductTemplate(models.Model):
         if not url:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
         response = requests.post(url=url, json=category_structure, headers=headers)
+        print("response========================================",response)
         return category_structure
 
  
