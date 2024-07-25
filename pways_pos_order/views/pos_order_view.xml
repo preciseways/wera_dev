@@ -49,7 +49,7 @@
                 </page>
             </xpath>            
             <xpath expr="//page[@name='general_information']" position="after">
-                <page name="slot_group" string="Item Slots">
+                <page name="slot_group" string="Day Slots">
                     <field name="slot_ids">
                         <tree string="Day Slots" editable="bottom">
                             <field name="start_hour" widget="float_time"/>
