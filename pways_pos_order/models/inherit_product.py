@@ -133,10 +133,11 @@ class ProductTemplate(models.Model):
 
                 for value in attribute_line.product_template_value_ids:
                     print("value=========================",value.product_attribute_value_id)
+                    price_extra = value.price_extra + product.list_price
                     variant = {
                         "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
-                        "price": int(value.price_extra),
+                        "price": int(price_extra),
                         "default": False,
                         "is_veg": 1,
                         "in_stock": 1,

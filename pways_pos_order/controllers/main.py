@@ -39,6 +39,7 @@ class PwaysPOSOrder(http.Controller):
         if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
                 variant_line = []
+                product_id = request.env['product.template'].sudo().search([('id', '=', item['item_id'])])
                 for x in item['variants']:
                     var_val = {
                         'variant_id': x['variant_id'],
@@ -51,7 +52,6 @@ class PwaysPOSOrder(http.Controller):
                     variant_price = x['price']
                     variant_name = x['variant_name']
                 
-                product_id = request.env['product.template'].sudo().search([('id', '=', item['item_id'])])
                 print("item id----------------------------------", item['wera_item_id'])
                 print("item id----------------------------------", item['item_name'])
                 print("product--------------------id-----------", product_id)
