@@ -49,7 +49,7 @@
             	<page name="odoo_webhook" string="Odoo Webhook">
             		<group>
 	            		<group>
-			                <!-- <field name="accept_url" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/> -->
+			                <field name="order_reject_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
 <!-- 			                <field name="reject_url"/>
 			                <field name="food_ready_url"/>
 			                <field name="call_support"/> -->

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 from odoo.exceptions import ValidationError, UserError
+from odoo import http, _
 
 class PosConfig(models.Model):
     _inherit = "pos.config"
@@ -20,6 +21,12 @@ class PosResCompany(models.Model):
     order_pickup_url = fields.Char(string="Order Picked-up URL")
     get_customer_url = fields.Char(string="Get Customer Number URL")
     menu_creation_url = fields.Char(string="Menu Creation URL")
+    order_reject_webhook = fields.Char(string="Odoo Reject Webhook URL", compute='create_config_reject_url')
+
+    def create_config_reject_url(self):
+        base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
+        print("base_url-----------------------------",base_url)
+        self.order_reject_webhook = base_url+'/order/cancel'
 
 class ProductCategory(models.Model):
     _inherit = 'product.category'
