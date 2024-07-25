@@ -49,7 +49,7 @@ class PwaysPOSOrder(http.Controller):
                     }
                     variant_line.append((0, 0, var_val))
                     variant_price = x['price']
-                    variant_name = x['variant_name']
+                    variant_id = x['variant_id']
                 
                 product_id = request.env['product.template'].sudo().search([('id', '=', item['item_id'])])
                 print("item id----------------------------------", item['wera_item_id'])
@@ -59,8 +59,8 @@ class PwaysPOSOrder(http.Controller):
                 print("variant--------------------price---------------------------",variant_price)
                 if len(product_id.product_variant_ids)  > 1:
                     for rec in product_id.product_variant_ids:
-                        print("product price_extra---------------",rec.price_extra)
-                        if rec.price_extra == variant_price:
+                        print("product price_extra---------------",rec.product_template_variant_value_ids)
+                        if rec.product_template_variant_value_ids.ids in variant_id:
                             print("product name------------------------------",rec.name)
                             product_id = rec
                         else:
