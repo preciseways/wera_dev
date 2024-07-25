@@ -56,15 +56,17 @@ class PwaysPOSOrder(http.Controller):
                 print("item id----------------------------------", item['item_name'])
                 print("product--------------------id-----------", product_id)
                 print("variant--------------------id-----------", product_id.product_variant_ids)
-                print("variant--------------------price---------------------------",variant_price)
+                print("variant--------------------price---------------------------",variant_id)
                 if len(product_id.product_variant_ids)  > 1:
                     for rec in product_id.product_variant_ids:
                         print("product price_extra---------------",rec.product_template_variant_value_ids)
                         for x in rec.product_template_variant_value_ids:
                             if x.product_attribute_value_id.id == variant_id:
+                                print("product -------------------product_attribute_value_id------------------------------------".x.product_attribute_value_id)
                                 print("product name------------------------------",rec.name)
                                 product_id = rec
                             else:
+                                print("its is coming in else part-------------------------")
                                 product_id = rec
                 else:
                     product_id = product_id.product_variant_ids
