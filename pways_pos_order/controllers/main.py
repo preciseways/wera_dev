@@ -31,7 +31,7 @@ class PwaysPOSOrder(http.Controller):
         print("Data------Order Creation-------Function Called---------")
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
-        # print("Data------Order Creation----------------", data_in_json)
+        print("Data------Order Creation----------------", data_in_json)
         pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
         addons_val = []
