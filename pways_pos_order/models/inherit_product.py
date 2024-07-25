@@ -22,11 +22,23 @@ class PosResCompany(models.Model):
     get_customer_url = fields.Char(string="Get Customer Number URL")
     menu_creation_url = fields.Char(string="Menu Creation URL")
     order_reject_webhook = fields.Char(string="Odoo Reject Webhook URL", compute='create_config_reject_url')
+    order_place_order_webhook = fields.Char(string="Odoo Place Order Webhook URL", compute='create_config_place_order_url')
+    order_push_delivery_agent_webhook = fields.Char(string="Odoo Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url')
 
     def create_config_reject_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
         print("base_url-----------------------------",base_url)
         self.order_reject_webhook = base_url+'/order/cancel'
+
+    def create_config_place_order_url(self):
+        base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
+        print("base_url-----------------------------",base_url)
+        self.order_reject_webhook = base_url+'/post/order'
+
+    def create_config_push_delivery_url(self):
+        base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
+        print("base_url-----------------------------",base_url)
+        self.order_reject_webhook = base_url+'/order/push/delivery-agent'
 
 class ProductCategory(models.Model):
     _inherit = 'product.category'

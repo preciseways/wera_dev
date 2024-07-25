@@ -50,6 +50,8 @@
             		<group>
 	            		<group>
 			                <field name="order_reject_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
+			                <field name="order_place_order_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
+			                <field name="order_push_delivery_agent_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
 <!-- 			                <field name="reject_url"/>
 			                <field name="food_ready_url"/>
 			                <field name="call_support"/> -->
