@@ -56,12 +56,12 @@
 			                <field name="food_ready_url"/>
 			                <field name="call_support"/> -->
 	            		</group>            		
-	            		<group>
+	            		<!-- <group> -->
 	            			<!-- <field name="menu_creation_url"/>
 			                <field name="order_delivery_url"/>
 			                <field name="order_pickup_url"/>
 			                <field name="get_customer_url"/> -->
-	            		</group>
+	            		<!-- </group> -->
             		</group>
             	</page>            		
             </xpath>
