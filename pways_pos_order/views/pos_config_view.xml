@@ -45,6 +45,24 @@
             		</group>
             	</page>            		
             </xpath>
+            <xpath expr="//page[@name='general_info']" position="after">
+            	<page name="odoo_webhook" string="Odoo Webhook">
+            		<group>
+	            		<group>
+			                <!-- <field name="accept_url" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/> -->
+<!-- 			                <field name="reject_url"/>
+			                <field name="food_ready_url"/>
+			                <field name="call_support"/> -->
+	            		</group>            		
+	            		<group>
+	            			<!-- <field name="menu_creation_url"/>
+			                <field name="order_delivery_url"/>
+			                <field name="order_pickup_url"/>
+			                <field name="get_customer_url"/> -->
+	            		</group>
+            		</group>
+            	</page>            		
+            </xpath>
         </field>
     </record>
 </odoo>
