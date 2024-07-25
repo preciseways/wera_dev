@@ -132,6 +132,7 @@ class ProductTemplate(models.Model):
                 }
 
                 for value in attribute_line.product_template_value_ids:
+                    print("value=========================",value.product_attribute_value_id)
                     variant = {
                         "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
