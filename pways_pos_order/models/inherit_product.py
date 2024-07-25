@@ -24,12 +24,12 @@ class PosResCompany(models.Model):
 class ProductCategory(models.Model):
     _inherit = 'product.category'
 
-    description = fields.Char(string="Description")
+    description = fields.Char(string="Description", help="Insert the Category Description")
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    wera_id = fields.Integer(string="Wera Item ID")
+    wera_id = fields.Integer(string="Wera Item ID", help="Insert Wera Item ID")
     is_veg = fields.Boolean(string="Is Veg")
     in_stock = fields.Boolean(string="In Stock")
     description = fields.Char(string="Description")
@@ -37,13 +37,13 @@ class ProductTemplate(models.Model):
     igst = fields.Float(string="IGST Tax")
     sgst = fields.Float(string="SGST Tax")
     addons_group_ids = fields.Many2many('addon.group')
-    gst_liability = fields.Char(string="GST Liability")
+    gst_liability = fields.Char(string="GST Liability", help="Insert the Name who is responsible for GST")
     inclusive = fields.Boolean(string="Inclusive")
     packing_charges = fields.Float(string="Packing Charge")
     enable = fields.Boolean(string="Enable")
-    addon_free_limit = fields.Integer(string='Addon Free Limit')
-    addon_min_limit = fields.Integer(string="Addon Min Limit")
-    addon_limit = fields.Integer(string='Addon Limit',)
+    addon_free_limit = fields.Integer(string='Addon Free Limit', help="Insert the Addon Free Limit Which you want to give the customer free addon")
+    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Insert the Addon Min Limit whih you want to limit the minimun addon of the product")
+    addon_limit = fields.Integer(string='Addon Limit',help="Insert the Max allowed addons")
     image_url = fields.Char(string='Image URL')
     image_url_swiggy = fields.Char(string='Swiggy Image URL')
     image_url_zomato = fields.Char(string='Zomato Image URL')
@@ -302,9 +302,9 @@ class PosAddonGroup(models.Model):
 
     addon_group_id = fields.Many2one('product.template')
     name = fields.Char(string="Name")
-    addon_min_limit = fields.Char(string="Addon Min Limit")
-    addon_limit = fields.Char(string="Addon Limit")
-    addon_free_limit = fields.Char(string="Addon Free Limit")
+    addon_free_limit = fields.Integer(string='Addon Free Limit', help="Insert the Addon Free Limit Which you want to give the customer free addon")
+    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Insert the Addon Min Limit whih you want to limit the minimun addon of the product")
+    addon_limit = fields.Integer(string='Addon Limit',help="Insert the Max allowed addons")
     addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
     order = fields.Integer(string="Order")
 

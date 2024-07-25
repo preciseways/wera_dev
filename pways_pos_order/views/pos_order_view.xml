@@ -51,7 +51,7 @@
             <xpath expr="//page[@name='general_information']" position="after">
                 <page name="slot_group" string="Item Slots">
                     <field name="slot_ids">
-                        <tree string="Item Slots" editable="bottom">
+                        <tree string="Day Slots" editable="bottom">
                             <field name="start_hour" widget="float_time"/>
                             <field name="end_hour" widget="float_time"/>
                             <field name="week_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/> 

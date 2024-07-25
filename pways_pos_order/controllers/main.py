@@ -65,9 +65,6 @@ class PwaysPOSOrder(http.Controller):
                             if x.name == variant_name:
                                 print("product name------------------------------",rec.name)
                                 product_id = rec
-                            # else:
-                            #     print("its is coming in else part-------------------------")
-                            #     product_id = rec
                 else:
                     product_id = product_id.product_variant_ids
                 line_val = {
