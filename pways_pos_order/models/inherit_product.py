@@ -166,9 +166,9 @@ class ProductTemplate(models.Model):
                         "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
                         "price": int(price_extra),
-                        "default": value.is_default,
-                        "is_veg": value.is_veg,
-                        "in_stock": value.in_stock,
+                        "default": if value.is_default else False,
+                        "is_veg": 1 if value.is_veg else 0,
+                        "in_stock": 1 if value.in_stock else 0,
                         "order": value.order,
                         "gst_details": gst
                     }
@@ -199,8 +199,8 @@ class ProductTemplate(models.Model):
                         "id": str(addon_product.id),
                         "name": addon_product.product_name,
                         "price": int(addon_product.price),
-                        "is_veg": addon_product.is_veg,
-                        "in_stock": addon_product.in_stock,
+                        "is_veg": 1 if addon_product.is_veg else 0,
+                        "in_stock": 1 if addon_product.in_stock else 0,
                         "order": addon_product.order if addon_product.order else None,
                         "is_default": addon_product.is_default if addon_product.is_default else None,
                         "gst_details": gst
