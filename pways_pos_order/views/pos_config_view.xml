@@ -35,6 +35,22 @@
         </field>
     </record>
 
+
+    <record id="pways_wera_pos_attribute_variant_view" model="ir.ui.view">
+        <field name="name">product.template.attribute.value.inherited.view</field>
+        <field name="model">product.template.attribute.value</field>
+        <field name="inherit_id" ref="product.product_template_attribute_value_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_veg"/>
+                <field name="in_stock"/>
+                <field name="is_default"/>
+                <field name="order"/>
+                <field name="taxes_id" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
 	<record id="pways_pos_company_form_view" model="ir.ui.view">
         <field name="name">pos.res.company.form.view</field>
         <field name="model">res.company</field>

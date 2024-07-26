@@ -10,6 +10,15 @@ class PosConfig(models.Model):
 
     online_order = fields.Boolean(string="Online Order", help="Select the This to create Online Platform Order")
 
+class ProductAttributeValue(models.Model):
+    _inherit = "product.template.attribute.value"
+
+    is_veg = fields.Boolean(string="Is Veg", help="Is Veg")
+    in_stock  = fields.Boolean(string="In Stock", help="In Stock")
+    is_default = fields.Boolean(string="Is Default", help="Is Default")
+    order = fields.Integer(string="Order")
+    taxes_id = fields.Many2many('account.tax')
+
 class PosResCompany(models.Model):
     _inherit = "res.company"
 
@@ -36,11 +45,6 @@ class PosResCompany(models.Model):
     def create_config_push_delivery_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
         self.order_push_delivery_agent_webhook = base_url+'/order/push/delivery-agent'
-
-# class ProductCategory(models.Model):
-#     _inherit = 'product.category'
-
-#     description = fields.Char(string="Description", help="Insert the Category Description")
 
 class PosCategory(models.Model):
     _inherit = 'pos.category'
@@ -156,16 +160,17 @@ class ProductTemplate(models.Model):
                 for value in attribute_line.product_template_value_ids:
                     print("value=========================",value.product_attribute_value_id)
                     price_extra = value.price_extra + product.list_price
+                    gst = self.fetch_tax_details(value)
                     print("product variants price-----------------------------price_extra----------------------",price_extra)
                     variant = {
                         "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
                         "price": int(price_extra),
-                        "default": False,
-                        "is_veg": 1,
-                        "in_stock": 1,
-                        "order": 1,
-                        "gst_details": None
+                        "default": value.is_default,
+                        "is_veg": value.is_veg,
+                        "in_stock": value.in_stock,
+                        "order": value.order,
+                        "gst_details": gst
                     }
                     variant_group_dict["variants"].append(variant)
 
