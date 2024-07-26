@@ -166,7 +166,7 @@ class ProductTemplate(models.Model):
                         "id": str(value.product_attribute_value_id.id),
                         "name": str(value.name),
                         "price": int(price_extra),
-                        "default": if value.is_default else False,
+                        "default": value.is_default if value.is_default else False,
                         "is_veg": 1 if value.is_veg else 0,
                         "in_stock": 1 if value.in_stock else 0,
                         "order": value.order,
@@ -202,7 +202,7 @@ class ProductTemplate(models.Model):
                         "is_veg": 1 if addon_product.is_veg else 0,
                         "in_stock": 1 if addon_product.in_stock else 0,
                         "order": addon_product.order if addon_product.order else None,
-                        "is_default": addon_product.is_default if addon_product.is_default else None,
+                        "is_default": addon_product.is_default if addon_product.is_default else False,
                         "gst_details": gst
                     }
                     addon_group_dict["addons"].append(addon)
