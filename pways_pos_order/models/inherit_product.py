@@ -27,17 +27,14 @@ class PosResCompany(models.Model):
 
     def create_config_reject_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
-        print("base_url-----------------------------",base_url)
         self.order_reject_webhook = base_url+'/order/cancel'
 
     def create_config_place_order_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
-        print("base_url-----------------------------",base_url)
         self.order_place_order_webhook = base_url+'/post/order'
 
     def create_config_push_delivery_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
-        print("base_url-----------------------------",base_url)
         self.order_push_delivery_agent_webhook = base_url+'/order/push/delivery-agent'
 
 class ProductCategory(models.Model):
