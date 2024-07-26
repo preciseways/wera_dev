@@ -31,7 +31,7 @@
             	<page name="wera_info" string="Wera Details">
             		<group>
 	            		<group>
-			                <field name="accept_url" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
+			                <field name="accept_url"/>
 			                <field name="reject_url"/>
 			                <field name="food_ready_url"/>
 			                <field name="call_support"/>
