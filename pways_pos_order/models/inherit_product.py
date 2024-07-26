@@ -46,6 +46,7 @@ class PosCategory(models.Model):
     _inherit = 'pos.category'
 
     pos_category_description = fields.Char(string="Description", help="Insert the Category Description")
+    order = fields.Integer(string="Order")
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -86,7 +87,7 @@ class ProductTemplate(models.Model):
                 "id": category.id,
                 "name": category.name,
                 "description": category.pos_category_description or "",
-                "order": None,
+                "order": category.order,
                 "sub_categories": []
             }
             if not category.parent_id:
@@ -249,8 +250,8 @@ class ProductTemplate(models.Model):
             variant_group = self.fetch_variant_group(product)
             addons = self.fetch_addons_group(product)
             item_slot = self.get_item_slots(product)
-            main_categorie_id = product.categ_id.parent_id.id if product.categ_id.parent_id else product.categ_id.id
-            sub_category_id = product.categ_id.id if product.categ_id.parent_id else None
+            main_categorie_id = product.pos_categ_id.parent_id.id if product.pos_categ_id.parent_id else product.pos_categ_id.id
+            sub_category_id = product.pos_categ_id.id if product.pos_categ_id.parent_id else None
             item = {
                 "id": product.id,
                 "category_id": str(main_categorie_id),
