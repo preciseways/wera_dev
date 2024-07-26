@@ -85,7 +85,7 @@ class ProductTemplate(models.Model):
             categories_dict[category.id] = {
                 "id": category.id,
                 "name": category.name,
-                "description": category.description or "",
+                "description": category.pos_category_description or "",
                 "order": None,
                 "sub_categories": []
             }
