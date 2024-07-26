@@ -37,3 +37,7 @@
 .custom_pos_order .o_form_label{
     font-size: 18px;
 }
+/* static/src/css/styles.css */
+.custom_is_veg {
+    width:330px !important;
+}

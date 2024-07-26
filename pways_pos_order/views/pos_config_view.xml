@@ -22,6 +22,18 @@
 	        </xpath>
 	    </field>
 	</record>
+
+    <record id="pways_wera_pos_category__view" model="ir.ui.view">
+        <field name="name">pos.category.inherited.view</field>
+        <field name="model">pos.category</field>
+        <field name="inherit_id" ref="point_of_sale.product_pos_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="pos_category_description"/>
+            </xpath>
+        </field>
+    </record>
+
 	<record id="pways_pos_company_form_view" model="ir.ui.view">
         <field name="name">pos.res.company.form.view</field>
         <field name="model">res.company</field>

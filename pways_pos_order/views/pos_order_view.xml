@@ -86,16 +86,6 @@
                 </page>
             </xpath>
         </field>
-    </record>    
-    <record id="pways_product_category_inherited_view" model="ir.ui.view">
-        <field name="name">product.category.inherited.view</field>
-        <field name="model">product.category</field>
-        <field name="inherit_id" ref="product.product_category_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='parent_id']" position="after">
-                <field name="description"/>
-            </xpath>
-        </field>
     </record>
 
 </odoo>
