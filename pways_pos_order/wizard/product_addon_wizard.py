@@ -4,7 +4,7 @@ class AddonGroupProductWizard(models.TransientModel):
     _name = 'addon.group.product.wizard'
     _description = 'Addon Group Product Wizard'
 
-    name = fields.Char(string='Name', readonly=True)
+    name = fields.Char(string='Name', readonly=True , help="Insert the Adoon Name")
     addon_free_limit = fields.Integer(string='Addon Free Limit', help="A number of addons which can be selected for free. Use -1 for unlimited")
     addon_min_limit = fields.Integer(string="Addon Min Limit", help="Min allowed addons")
     addon_limit = fields.Integer(string='Addon Limit',help="Max allowed addons")
