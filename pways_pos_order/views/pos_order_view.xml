@@ -38,10 +38,10 @@
                     <field name="addons_group_ids">
                         <tree string="Addon Groups" editable="bottom">
                             <field name="addon_group_id" invisible="1"/>
-                            <field name="name" />
-                            <field name="addon_min_limit" />
-                            <field name="addon_limit" />
-                            <field name="addon_free_limit"/>
+                            <field name="name"  help="Insert Addon Name"/>
+                            <field name="addon_min_limit"  help="Min allowed addons"/>
+                            <field name="addon_limit"  help="Max allowed addons"/>
+                            <field name="addon_free_limit" help="A number of addons which can be selected for free. Use -1 for unlimited"/>
                             <field name="order"/>
                             <button name="%(pways_pos_order.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
                         </tree>

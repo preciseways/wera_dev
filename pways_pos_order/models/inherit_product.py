@@ -32,8 +32,8 @@ class PosResCompany(models.Model):
     menu_creation_url = fields.Char(string="Menu Creation URL", help="This URL is used to post the order in wera")
     order_reject_webhook = fields.Char(string="Odoo Reject Webhook URL", compute='create_config_reject_url', help="This URL is for the Rejecting Order from the Wera Side")
     order_place_order_webhook = fields.Char(string="Odoo Place Order Webhook URL", compute='create_config_place_order_url',help="This URL Is for the Place Order From the Wera Side")
-    order_push_delivery_agent_webhook = fields.Char(string="Odoo Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url',help="This URL used for the wera side to push delivery agent")
-    order_auto_accept_webhook = fields.Char(string="Order Auto Accept Webhook URL", compute='create_auto_accept_webhook_url', help="This URL is for the auto accepting Order")
+    order_push_delivery_agent_webhook = fields.Char(string="Odoo Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url',help="This URL used from the wera side to push delivery agent")
+    order_auto_accept_webhook = fields.Char(string="Order Auto Accept Webhook URL", compute='create_auto_accept_webhook_url', help="This URL is for the auto accepting Order from wera side")
 
     def create_auto_accept_webhook_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
@@ -78,7 +78,7 @@ class ProductTemplate(models.Model):
     image_url = fields.Char(string='Image URL', help="Insert Food Image URL")
     image_url_swiggy = fields.Char(string='Swiggy Image URL', help="Insert Food Image URL For Swiggy")
     image_url_zomato = fields.Char(string='Zomato Image URL', help="Insert Food Image URL For Zomato")
-    is_goods = fields.Boolean(string='Is Goods')
+    is_goods = fields.Boolean(string='Is Goods', help="Is Goods")
     order = fields.Integer(string="Order")
     preparation_time = fields.Integer(string="Preparation Time" ,help="Insert Preparation Time Of Food")
     slot_ids = fields.One2many('item.slots','slot_id')
@@ -321,7 +321,7 @@ class PosProductItemSlots(models.Model):
     slot_id = fields.Many2one('product.template')
     start_hour = fields.Float(string="Open Time" , help="Open Time")    
     end_hour = fields.Float(string="Close Time", help="Close Time")
-    week_ids = fields.Many2many('week.day')
+    week_ids = fields.Many2many('week.day', help="Select the Week Day")
 
 class Weekday(models.Model):
     _name = 'week.day'

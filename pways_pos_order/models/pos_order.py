@@ -32,9 +32,9 @@ class PosOrderAddons(models.Model):
 
     order_addon = fields.Many2one('pos.order')
     addon_id = fields.Many2one('addon.group.product')
-    name = fields.Char(string="Product Name")
-    price = fields.Float(string="Price")
-    discount = fields.Float(string="Discount")
+    name = fields.Char(string="Product Name", help="Insert the Product Name")
+    price = fields.Float(string="Price", help="Insert Product Price")
+    discount = fields.Float(string="Discount", help="Insert the Discount on Product")
 
 
 class PosOrder(models.Model):
