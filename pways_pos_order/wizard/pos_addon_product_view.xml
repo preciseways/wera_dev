@@ -8,11 +8,11 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="addon_min_limit"/>
+                            <field name="addon_min_limit"  help="Min allowed addons"/>
                         </group>
                         <group>
-                            <field name="addon_limit"/>
-                            <field name="addon_free_limit"/>
+                            <field name="addon_limit"  help="Max allowed addons"/>
+                            <field name="addon_free_limit" help="A number of addons which can be selected for free. Use -1 for unlimited"/>
                             <field name="order"/>
                         </group>
                     </group>
