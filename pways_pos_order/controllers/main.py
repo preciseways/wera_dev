@@ -8,24 +8,8 @@ import requests
 import yaml
 
 class PwaysPOSOrder(http.Controller):
-
-    # #menu creation url
-    # @http.route('/menu/creation', type='json', auth='public')
-    # def pos_menu_creation(self):
-    #     pos_category = self.env['product.category'].sudo().search([('parent_id','=',False)])
-    #     pos_product = self.env['product.product'].sudo().search([( )])
-
-    #trial url for testing
-    @http.route('/order/test', type='json', auth='public')
-    def post_order_test(self):
-        print("Data------Order Test----------------")
-
-        data_in_json = json.loads(request.httprequest.data)
-        response = json.dumps({"code":1,"msg":'',"details":[]})
-        return json.dumps({"code":1,"msg":'',"details":[]})  
-
-
-        #order creation 
+    
+    #order creation 
     @http.route('/post/order', type='json', auth='public')
     def set_order_value(self):
         print("Data------Order Creation-------Function Called---------")

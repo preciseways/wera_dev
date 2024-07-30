@@ -33,6 +33,11 @@ class PosResCompany(models.Model):
     order_reject_webhook = fields.Char(string="Odoo Reject Webhook URL", compute='create_config_reject_url', help="This URL is for the Rejecting Order from the Wera Side")
     order_place_order_webhook = fields.Char(string="Odoo Place Order Webhook URL", compute='create_config_place_order_url',help="This URL Is for the Place Order From the Wera Side")
     order_push_delivery_agent_webhook = fields.Char(string="Odoo Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url',help="This URL used for the wera side to push delivery agent")
+    order_auto_accept_webhook = fields.Char(string="Order Auto Accept Webhook URL", compute='create_auto_accept_webhook_url', help="This URL is for the auto accepting Order")
+
+    def create_auto_accept_webhook_url(self):
+        base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
+        self.order_auto_accept_webhook = base_url+'/order/auto/accept'
 
     def create_config_reject_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
