@@ -5,9 +5,9 @@ class AddonGroupProductWizard(models.TransientModel):
     _description = 'Addon Group Product Wizard'
 
     name = fields.Char(string='Name', readonly=True , help="Insert the Adoon Name")
-    addon_free_limit = fields.Integer(string='Addon Free Limit', help="A number of addons which can be selected for free. Use -1 for unlimited")
-    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Min allowed addons")
-    addon_limit = fields.Integer(string='Addon Limit',help="Max allowed addons")
+    addon_free_limit = fields.Integer(string='Addon Free Limit',readonly=True, help="A number of addons which can be selected for free. Use -1 for unlimited")
+    addon_min_limit = fields.Integer(string="Addon Min Limit", readonly=True, help="Min allowed addons")
+    addon_limit = fields.Integer(string='Addon Limit',readonly=True, help="Max allowed addons")
     order = fields.Integer(string='Order', readonly=True)
     
     def action_confirm(self):
