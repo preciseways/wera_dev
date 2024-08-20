@@ -24,7 +24,6 @@
                     <field name="refunded_orders_count" invisible="1" />
                 </header>
                 <sheet class="custom-pos-order-sheet">
-                    <field name="failed_pickings" invisible="1"/>
                     <field name="is_refunded" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_stock_picking"
@@ -32,7 +31,7 @@
                             class="oe_stat_button"
                             icon="fa-truck"
                             invisible="picking_count == 0">
-                            <field name="picking_count" widget="statinfo" string="Pickings" invisible="failed_pickings"/>
+                            <field name="picking_count" widget="statinfo" string="Pickings"/>
                             <field name="picking_count" widget="statinfo" string="Pickings" class="text-danger" invisible="not failed_pickings"/>
                         </button>
                         <button name="action_view_invoice"
