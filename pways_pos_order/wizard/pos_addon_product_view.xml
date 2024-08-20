@@ -1,0 +1,49 @@
+<odoo>
+    <record id="addon_group_product_wizard_form_view" model="ir.ui.view">
+        <field name="name">addon.group.product.wizard.form</field>
+        <field name="model">addon.group.product.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="addon_min_limit"/>
+                            <field name="addon_limit"/>
+                        </group>
+                        <group>
+                            <field name="addon_free_limit"/>
+                            <field name="order"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Addon Product">
+                            <field name="addons_product_ids" mode="tree">
+                                <tree>
+                                    <field name="product_name"/>
+                                    <field name="is_veg"/>
+                                    <field name="in_stock"/>
+                                    <field name="is_default"/>
+                                    <field name="order"/>
+                                    <field name="price"/>
+                                    <field name="taxes_id" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_addon_group_product_wizard" model="ir.actions.act_window">
+        <field name="name">Addons Group Product</field>
+        <field name="res_model">addon.group.product.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="addon_group_product_wizard_form_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

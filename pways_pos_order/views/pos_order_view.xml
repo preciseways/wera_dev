@@ -1,0 +1,87 @@
+<odoo>
+    <record id="pos_session_config_inheirt" model="ir.ui.view">
+        <field name="name">pos.config.kanban.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_ui']" position="replace">
+                <button t-if="record.current_session_state.raw_value != 'closing_control'" class="btn btn-primary" name="open_ui" type="object">
+                    <t t-if="record.online_order"><span>fff</span></t>
+                        <t t-elif="record.current_session_state.raw_value === 'opened'">Continue selling</t>
+                        <t t-elif="!record.current_session_id.raw_value and !record.pos_session_username.value">New Session</t>
+                        <t t-elif="record.current_session_state.raw_value === 'opening_control'">Open Session</t>
+                    </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="pos_session_confddig_inheirt" model="ir.ui.view">
+        <field name="name">pos.config.kanban.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="online_order"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pways_product_template_inherited_view" model="ir.ui.view">
+        <field name="name">product.normal.form.inherited.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="wera_product_info" string="Wera Product Info">
+                    <group>
+                        <group>
+                            <field name="wera_id"/>
+                            <field name="description"/>
+                            <field name="is_veg"/>
+                            <field name="in_stock"/>
+                            <field name="enable"/>
+                            <field name="addon_min_limit"/>
+                            <field name="addon_free_limit"/>
+                            <field name="addon_limit"/>
+                        </group>
+                        <group>
+                            <field name="image_url"/>
+                            <field name="image_url_swiggy"/>
+                            <field name="image_url_zomato"/>
+                            <field name="preparation_time"/>
+                            <field name="packing_charges"/>
+                            <field name="is_goods"/>
+                            <field name="inclusive"/>
+                            <field name="gst_liability"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="addon_group" string="Addon Group">
+                    <field name="addons_group_ids">
+                        <tree string="Addon Groups" editable="bottom">
+                            <field name="addon_group_id" invisible="1"/>
+                            <field name="name" />
+                            <field name="addon_min_limit" />
+                            <field name="addon_limit" />
+                            <field name="addon_free_limit"/>
+                            <field name="order"/>
+                            <button name="action_open_form" icon="fa-list" title="Product" context="{'default_id': addon_group_id}" type="object" /> 
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>    
+    <record id="pways_product_category_inherited_view" model="ir.ui.view">
+        <field name="name">product.category.inherited.view</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="description"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
