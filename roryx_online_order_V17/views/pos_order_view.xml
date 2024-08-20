@@ -34,16 +34,35 @@
                 <button name="pos_menu_creation" string="Menu Creation" class="oe_highlight" type="object"/>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
+                <page name="catelog_attribute" string="Catelog Attribute">
+                    <group>
+                        <group>
+                            <field name="spice_level"/>
+                            <field name="sweet_level"/>
+                            <field name="gravy_property"/>
+                            <field name="bone_property"/>
+                            <field name="contain_seasonal_ingredients"/>
+                        </group>
+                        <group>
+                            <field name="server_bowls"/>
+                            <field name="accompaniments" widget="many2many_tags"/>
+                            <field name="quantity_value"/>
+                            <field name="measures"/>                          
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
                 <page name="addon_group" string="Addon Group">
                     <field name="addons_group_ids">
                         <tree string="Addon Groups" editable="bottom">
                             <field name="addon_group_id" invisible="1"/>
-                            <field name="name"  help="Insert Addon Name"/>
-                            <field name="addon_min_limit"  help="Min allowed addons"/>
-                            <field name="addon_limit"  help="Max allowed addons"/>
-                            <field name="addon_free_limit" help="A number of addons which can be selected for free. Use -1 for unlimited"/>
+                            <field name="name" />
+                            <field name="addon_min_limit" />
+                            <field name="addon_limit" />
+                            <field name="addon_free_limit"/>
                             <field name="order"/>
-                            <button name="%(pways_pos_order.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
+                            <button name="%(roryx_online_order_V17.action_addon_group_product_wizard)d" icon="fa-list" title="Product" type="action" /> 
                         </tree>
                     </field>
                 </page>
@@ -68,6 +87,7 @@
                             <field name="is_veg"/>
                             <field name="in_stock"/>
                             <field name="enable"/>
+                            <field name="order"/>
                             <field name="addon_min_limit"/>
                             <field name="addon_free_limit"/>
                             <field name="addon_limit"/>

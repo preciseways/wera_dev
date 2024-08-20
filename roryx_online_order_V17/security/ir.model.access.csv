@@ -8,4 +8,5 @@ access_addon_group_product_wizard_line,access.addon.group.product.wizard.line,mo
 access_item_slots,access_item_slots,model_item_slots,base.group_user,1,1,1,1
 access_week_day,access_week_day,model_week_day,base.group_user,1,1,1,1
 access_order_addons,access_order_addons,model_order_addons,base.group_user,1,1,1,1
+access_product_accompaniments,access_product_accompaniments,model_product_accompaniments,base.group_user,1,1,1,1
 

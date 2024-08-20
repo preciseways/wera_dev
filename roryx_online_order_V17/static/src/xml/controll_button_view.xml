@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="roryx_online_order_V17.NavIcon" owl="1">
+        <div class="oe_status btn btn-light rounded-0">
+            <div class="js_connected oe_icon" t-on-click="() => this.onClick()">
+                <i class="fa fa-link me-1" />Order Details
+            </div>
+        </div>
+    </t>
+    <t t-name="roryx_online_order_V17.Navbar" t-inherit="point_of_sale.Navbar"
+       t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('status-buttons')]" position="inside">
+            <NavIcon/>
+        </xpath>
+    </t>
+</templates>

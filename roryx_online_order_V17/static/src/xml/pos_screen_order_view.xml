@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="roryx_online_order_V17.CustomScreen" owl="1">
+        <div class="top-content d-flex align-items-center p-2 border-bottom text-center">
+            <div class="discard btn btn-lg btn-light" t-on-click="back" style="float: left;">
+                <i class="fa fa-angle-double-left"/>
+                Back
+            </div>
+            <div class="top-content-center flex-grow-1">
+                <h2 class="mb-0">POS Online Order</h2>
+            </div>
+        </div>
+        <div class="partnerlist-screen screen">
+            <table class="partner-list table w-100">
+                <thead>
+                    <tr>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Order Ref.</th>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Customer</th>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Order From.</th>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Wera Order ID</th>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Order Date</th>
+                        <th class="py-2" style="font-size: 20px; font-weight: bold;">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="partner-list-contents">
+                    <t t-foreach="props.data"
+                       t-as="order"
+                       t-key="order.id">
+                        <tr>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.name"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.partner_name"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.order_from"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.order_id"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.date"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col"
+                                     t-att-class="{ highlight: isHighlighted(order) }">
+                                    <div>
+                                        <t t-esc="order.total"/>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>
+                

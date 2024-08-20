@@ -22,23 +22,24 @@ class ProductAttributeValue(models.Model):
 class PosResCompany(models.Model):
     _inherit = "res.company"
 
-    accept_url = fields.Char(string="Order Accept URL", help="This URL is used to post the status of order accepted")
-    reject_url = fields.Char(string="Order Reject URL",help="This URL is used to post the status of order rejected")
-    food_ready_url = fields.Char(string="Food Ready URL",help="This URL is used to post the status of order is ready")
-    call_support = fields.Char(string="Call Swiggy Partner URL",help="This URL is used to call the swiggy Parnter")
-    order_delivery_url = fields.Char(string="Get Delivery Agent URL",help="This URL is used to get delivery Agent")
-    order_pickup_url = fields.Char(string="Order Picked-up URL", help="This URL is used to post the status of order Picked-up by Delivery Agent or Customer")
-    get_customer_url = fields.Char(string="Get Customer Number URL",help="This URL is used to get customer Contact Number")
-    menu_creation_url = fields.Char(string="Menu Creation URL", help="This URL is used to post the order in wera")
-    order_reject_webhook = fields.Char(string="Odoo Reject Webhook URL", compute='create_config_reject_url', help="This URL is for the Rejecting Order from the Wera Side")
-    order_place_order_webhook = fields.Char(string="Odoo Place Order Webhook URL", compute='create_config_place_order_url',help="This URL Is for the Place Order From the Wera Side")
-    order_push_delivery_agent_webhook = fields.Char(string="Odoo Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url',help="This URL used from the wera side to push delivery agent")
-    order_auto_accept_webhook = fields.Char(string="Order Auto Accept Webhook URL", compute='create_auto_accept_webhook_url', help="This URL is for the auto accepting Order from wera side")
+    accept_url = fields.Char(string="Order Accept URL", help="This URL is used to post the status of order accepted",default="https://{api-domain}/pos/v2/order/accept")
+    reject_url = fields.Char(string="Order Reject URL",help="This URL is used to post the status of order rejected",default="https://{api-domain}/pos/v2/order/reject")
+    food_ready_url = fields.Char(string="Food Ready URL",help="This URL is used to post the status of order is ready",default="https://{api-domain}/pos/v2/order/food-ready")
+    call_support = fields.Char(string="Call Swiggy Partner URL",help="This URL is used to call the swiggy Parnter",default="https://{api-domain}/pos/v2/order/callsupport")
+    order_delivery_url = fields.Char(string="Get Delivery Agent URL",help="This URL is used to get delivery Agent",default="https://{api-domain}/pos/v2/order/getde")
+    order_pickup_url = fields.Char(string="Order Picked-up URL", help="This URL is used to post the status of order Picked-up by Delivery Agent or Customer",default="https://{api-domain}/pos/v2/order/pickedup")
+    get_customer_url = fields.Char(string="Get Customer Number URL",help="This URL is used to get customer Contact Number",default="https://{api-domain}/pos/v2/order/getcustomernumber")
+    menu_creation_url = fields.Char(string="Menu Creation URL", help="This URL is used to post the order in wera",default="https://{api-domain}/pos/v2/menu/fullmenu")
+    order_reject_webhook = fields.Char(string="Reject Webhook URL", compute='create_config_reject_url', help="This URL is for the Rejecting Order from the Wera Side")
+    order_place_order_webhook = fields.Char(string="Place Order Webhook URL", compute='create_config_place_order_url',help="This URL Is for the Place Order From the Wera Side")
+    order_push_delivery_agent_webhook = fields.Char(string="Push Delivery Agent Webhook URL", compute='create_config_push_delivery_url',help="This URL used for the wera side to push delivery agent")
+    order_auto_accept_webhook = fields.Char(string="Order Auto Accept Webhook URL", compute='create_auto_accept_webhook_url', help="This URL is for the auto accepting Order")
+    merchant_id = fields.Integer(string="Merchant ID", help="Insert Merchant ID")
 
     def create_auto_accept_webhook_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
         self.order_auto_accept_webhook = base_url+'/order/auto/accept'
-
+    
     def create_config_reject_url(self):
         base_url = http.request.env['ir.config_parameter'].get_param('web.base.url')
         self.order_reject_webhook = base_url+'/order/cancel'
@@ -57,6 +58,11 @@ class PosCategory(models.Model):
     pos_category_description = fields.Char(string="Description", help="Insert the Category Description")
     order = fields.Integer(string="Order")
 
+class PosAccompaniments(models.Model):
+    _name = 'product.accompaniments'
+
+    name = fields.Char(string="Accompaniments Item")
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -72,19 +78,27 @@ class ProductTemplate(models.Model):
     inclusive = fields.Boolean(string="Inclusive")
     packing_charges = fields.Float(string="Packing Charge", help="Insert Packing Charge")
     enable = fields.Boolean(string="Enable", help="Is Enable")
-    addon_free_limit = fields.Integer(string='Addon Free Limit', help="A number of addons which can be selected for free. Use -1 for unlimited")
-    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Min allowed addons")
-    addon_limit = fields.Integer(string='Addon Limit',help="Max allowed addons")
+    addon_free_limit = fields.Integer(string='Addon Free Limit', help="Insert the Addon Free Limit Which you want to give the customer free addon")
+    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Insert the Addon Min Limit whih you want to limit the minimun addon of the product")
+    addon_limit = fields.Integer(string='Addon Limit',help="Insert the Max allowed addons")
     image_url = fields.Char(string='Image URL', help="Insert Food Image URL")
     image_url_swiggy = fields.Char(string='Swiggy Image URL', help="Insert Food Image URL For Swiggy")
     image_url_zomato = fields.Char(string='Zomato Image URL', help="Insert Food Image URL For Zomato")
-    is_goods = fields.Boolean(string='Is Goods', help="Is Goods")
+    is_goods = fields.Boolean(string='Is Goods')
     order = fields.Integer(string="Order")
     preparation_time = fields.Integer(string="Preparation Time" ,help="Insert Preparation Time Of Food")
     slot_ids = fields.One2many('item.slots','slot_id')
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, ondelete='cascade')
-
-
+    spice_level = fields.Selection([('NONSPICY','Non Spicy'),('MEDIUMSPICY','Medium Spicy'),('VERYSPICY','Very Spicy'),('NOT_APPLICABLE','Not Applicable')], string="Spice Level")
+    sweet_level = fields.Selection([('LOW','Low'),('MEDIUM','Medium'),('HIGH','High'),('NOT_APPLICABLE','Not Applicable')], string="Sweet Level")
+    bone_property = fields.Selection([('WITHBONE','With Bone'),('BONELESS','Bone Less'),('NOT_APPLICABLE','Not Applicable')],string="Bone Property", help="Insert Bone Property Of Food")
+    gravy_property = fields.Selection([('DRY','Dry'),('GRAVY','Gravy'),('NOT_APPLICABLE','Not Applicable')],string="Gravy Property", help="Insert Bone Property Of Food")
+    contain_seasonal_ingredients = fields.Boolean(string="Seasonal Ingredients", help="Insert Seasonal Ingredients used in Food")
+    server_bowls = fields.Integer(string="Serves How many", help="Insert How many times Serves")
+    accompaniments = fields.Many2many('product.accompaniments', string="Food Accompaniments", help="Food Accompaniments")
+    uom_id = fields.Many2one('uom.uom', 'UOM', help="Insert Units of Measures")
+    quantity_value = fields.Integer(string="Quantity", help="Insert Values Of Food")
+    measures = fields.Selection([('ounces','Ounces'),('pounds','Pounds'),('pieces','Pieces'),('litre','Litre'),('ml','ML'),('kg','KG'),('gram','Gram'),('inches','Inches'),('slices','Slices')], string="Measures")
     def fetch_categories(self):
         pos_categories = self.env['pos.category'].sudo().search([])
 
@@ -96,7 +110,7 @@ class ProductTemplate(models.Model):
                 "id": category.id,
                 "name": category.name,
                 "description": category.pos_category_description or "",
-                "order": category.order,
+                "order": category.order if category.order else 0,
                 "sub_categories": []
             }
             if not category.parent_id:
@@ -172,9 +186,9 @@ class ProductTemplate(models.Model):
                         "name": str(value.name),
                         "price": int(price_extra),
                         "default": value.is_default if value.is_default else False,
-                        "is_veg": 1 if value.is_veg else 0,
+                        "is_veg": value.is_veg if value.is_veg else False,
                         "in_stock": 1 if value.in_stock else 0,
-                        "order": value.order,
+                        "order": value.order if value.order else 0,
                         "gst_details": gst
                     }
                     variant_group_dict["variants"].append(variant)
@@ -194,7 +208,7 @@ class ProductTemplate(models.Model):
                     "addon_free_limit": addon_group.addon_free_limit if addon_group.addon_free_limit else None,
                     "addon_limit": addon_group.addon_limit if addon_group.addon_limit else None,
                     "addon_min_limit": addon_group.addon_min_limit if addon_group.addon_min_limit else None,
-                    "order": None,
+                    "order": addon_group.order if addon_group.order else 0,
                     "addons": []
                 }
 
@@ -239,10 +253,17 @@ class ProductTemplate(models.Model):
                     item_slot.append(slot_dict)
         return item_slot
 
+    def get_accompaniment(self, product):
+        accompaniments = [ ]
+        for rec in product.accompaniments:
+            accompaniments.append(str(rec.name))
+        return accompaniments
+
     def pos_menu_creation(self):
         print("self--------------------------",self.company_id)
+        merchant_id = self.company_id.merchant_id
         category_structure = {
-            "merchant_id": "2544",
+            "merchant_id": str(merchant_id),
             "menu": {
                 "entity": {
                     "main_categories": [],
@@ -260,20 +281,23 @@ class ProductTemplate(models.Model):
             variant_group = self.fetch_variant_group(product)
             addons = self.fetch_addons_group(product)
             item_slot = self.get_item_slots(product)
-            main_categorie_id = product.pos_categ_id.parent_id.id if product.pos_categ_id.parent_id else product.pos_categ_id.id
-            sub_category_id = product.pos_categ_id.id if product.pos_categ_id.parent_id else None
+            main_categorie_id = product.pos_categ_ids.parent_id.id if product.pos_categ_ids.parent_id else product.pos_categ_ids.id
+            sub_category_id = product.pos_categ_ids.id if product.pos_categ_ids.parent_id else None
+            accompaniments = self.get_accompaniment(product)
+            print("accompaniments--------------------",accompaniments)
             item = {
                 "id": product.id,
                 "category_id": str(main_categorie_id),
                 "sub_category_id": str(sub_category_id),
-                "name": product.name,
-                "is_veg": product.is_veg,
+                "name": product.name or "",
+                "is_veg": product.is_veg if product.is_veg else False,
                 "description": product.description or "",
                 "price": product.list_price or 0,
+                "in_stock": 1 if product.in_stock else 0 ,
                 "gst_details": gst,
                 "packing_charges": str(product.packing_charges) or "0",
                 "enable": 1 if product.enable else 0,
-                "in_stock": 1 if product.in_stock else 0,
+                 "in_stock": 1 if product.in_stock else 0,
                 "addon_free_limit": product.addon_free_limit if product.addon_free_limit else None,
                 "addon_limit": product.addon_limit if product.addon_limit else None,
                 "addon_min_limit": product.addon_min_limit or None,
@@ -281,22 +305,25 @@ class ProductTemplate(models.Model):
                 "item_slots": [],
                 "image_url_swiggy": product.image_url_swiggy or "",
                 "image_url_zomato": product.image_url_zomato or "",
-                "is_goods": False,
+                "is_goods": True if product.is_goods else False,
                 "variant_groups": variant_group,
                 "addon_groups": addons,
                 "pricing_combinations": [],
                 "item_slots": item_slot,
-                "order": 2,
+                "order":  product.order if product.order else 0,
                 "recommended": False,
                 "catalog_attributes": {
-                    "spice_level": None,
-                    "sweet_level": None,
-                    "gravy_property": None,
-                    "bone_property": None,
-                    "contain_seasonal_ingredients": None,
-                    "accompaniments": None,
-                    "quantity": None,
-                    "serves_how_many": None
+                    "spice_level": product.spice_level if product.spice_level else None,
+                    "sweet_level": product.sweet_level if product.sweet_level else None,
+                    "gravy_property": product.gravy_property if product.gravy_property else None,
+                    "bone_property": product.bone_property if product.bone_property else None,
+                    "contain_seasonal_ingredients": True if product.contain_seasonal_ingredients else False,
+                    "accompaniments": accompaniments,
+                    "quantity": {
+                        "value": product.quantity_value if product.quantity_value else 0,
+                        "unit": product.measures if product.measures else None
+                    },
+                    "serves_how_many": product.server_bowls if product.server_bowls else None
                 }
             }
             category_structure["menu"]["entity"]["items"].append(item)
@@ -306,9 +333,12 @@ class ProductTemplate(models.Model):
 
         headers = {"X-Wera-Api-Key": "8cab0be2-1972-480d-a077-5f5a905806dc", "Content-Type": "application/json", "Accept": "application/json"}
         url = self.company_id.menu_creation_url
+
         print("category_structure----------------", json.dumps(category_structure, indent=2))
         if not url:
             raise ValidationError(_('"Insert Menu Creation URL in Company."'))
+        if not merchant_id:
+            raise ValidationError(_("Insert Merchat ID in Company"))
         response = requests.post(url=url, json=category_structure, headers=headers)
         print("response========================================",response)
         return category_structure
@@ -321,7 +351,7 @@ class PosProductItemSlots(models.Model):
     slot_id = fields.Many2one('product.template')
     start_hour = fields.Float(string="Open Time" , help="Open Time")    
     end_hour = fields.Float(string="Close Time", help="Close Time")
-    week_ids = fields.Many2many('week.day', help="Select the Week Day")
+    week_ids = fields.Many2many('week.day')
 
 class Weekday(models.Model):
     _name = 'week.day'
@@ -334,9 +364,9 @@ class PosAddonGroup(models.Model):
 
     addon_group_id = fields.Many2one('product.template')
     name = fields.Char(string="Name" ,help="Addon Group Name")
-    addon_free_limit = fields.Integer(string='Addon Free Limit', help="A number of addons which can be selected for free. Use -1 for unlimited")
-    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Min allowed addons")
-    addon_limit = fields.Integer(string='Addon Limit',help="Max allowed addons")
+    addon_free_limit = fields.Integer(string='Addon Free Limit', help="Insert the Addon Free Limit Which you want to give the customer free addon")
+    addon_min_limit = fields.Integer(string="Addon Min Limit", help="Insert the Addon Min Limit whih you want to limit the minimun addon of the product")
+    addon_limit = fields.Integer(string='Addon Limit',help="Insert the Max allowed addons")
     addons_product_ids = fields.One2many('addon.group.product','addon_product_id')
     order = fields.Integer(string="Order")
 

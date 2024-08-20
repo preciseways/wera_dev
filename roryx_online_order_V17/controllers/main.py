@@ -9,17 +9,25 @@ import yaml
 
 class PwaysPOSOrder(http.Controller):
     
-    #order creation 
     @http.route('/post/order', type='json', auth='public')
     def set_order_value(self):
         print("Data------Order Creation-------Function Called---------")
         today = datetime.now()
         data_in_json = json.loads(request.httprequest.data)
-        print("Data------Order Creation----------------", data_in_json)
-        pos_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
+        # print("Data------Order Creation----------------", data_in_json)
+        pos_session = request.env['pos.session'].sudo().search([('custom_session', '!=', True)])
+        pos_online_session = request.env['pos.session'].sudo().search([('custom_session', '=', True)])
         order_line = []
         addons_val = []
         variant_price = 0
+
+        # Fetch a valid pricelist_id
+        pricelist = request.env['product.pricelist'].sudo().search([], limit=1)
+        if not pricelist:
+            response = json.dumps({"code": 2, "message": "No valid pricelist found"})
+            return response
+        valid_pricelist_id = pricelist.id
+
         if 'order_items' in data_in_json:
             for item in data_in_json['order_items']:
                 variant_line = []
@@ -40,7 +48,7 @@ class PwaysPOSOrder(http.Controller):
                 print("item id----------------------------------", item['item_name'])
                 print("product--------------------id-----------", product_id)
                 print("variant--------------------id-----------", product_id.product_variant_ids)
-                # print("variant--------------------price---------------------------",variant_name)
+                
                 if len(product_id.product_variant_ids)  > 1:
                     for rec in product_id.product_variant_ids:
                         print("product price_extra---------------",rec.product_template_variant_value_ids)
@@ -58,12 +66,10 @@ class PwaysPOSOrder(http.Controller):
                     'price_unit': item['item_unit_price'] or False,
                     'price_subtotal': item['subtotal'] or False,
                     'price_subtotal_incl': item['subtotal'] or False,
-                    # 'variants': variant_line
                 }
                 order_line.append((0, 0, line_val))
                 if 'addons' in item:
                     print("finded addons---------------------------")
-                    # addon_line = []
                     for addon in item['addons']:
                         addon_val = {
                             'addon_id': int(addon['addon_id']),
@@ -78,7 +84,7 @@ class PwaysPOSOrder(http.Controller):
             'pos_order': True,
             'lines': order_line,
             'partner_id': 1,
-            'session_id': pos_session.id,
+            'session_id': pos_online_session.id,
             'amount_tax': data_in_json.get('packaging_cgst_percent') or False,
             'amount_total': data_in_json.get('gross_amount') or False,
             'amount_paid': 0,
@@ -97,16 +103,26 @@ class PwaysPOSOrder(http.Controller):
             'password': data_in_json.get('password') or False,
             'order_otp': data_in_json.get('order_otp') or False,
             'company_id': 1,
-            'pricelist_id': 1,
+            'pricelist_id': valid_pricelist_id,
             'order_addons_ids': addons_val
         }
-        
+        channel = "counter_channel"
+        message = {
+            "data": data_in_json.get('order_id'),
+            "channel": channel
+        }
+        print("pos_session--------------------",pos_session)
+        for session in pos_session:
+            request.env['bus.bus'].sudo()._sendone(session._get_bus_channel_name(), 'POS_ORDER_CREATION_NOTIFICATION', message)
+        # request.env["bus.bus"]._sendone(channel, "notification", message)
         order_created = request.env['pos.order'].sudo().search([('order_id', '=', data_in_json.get('order_id'))])
         if order_created:
             order_created.write(values)
+            print("order create------------------notification----------------")
             response = json.dumps({'state': 200, 'message': 'Successful', 'Order_id': order_created.order_id})
         else:
             pos_order = request.env['pos.order'].sudo().create(values)
+            pos_order.create_order_notification()
             response = json.dumps({'state': 200, 'message': 'Successful', 'Order_id': pos_order.order_id})
             if not pos_order:
                 response = json.dumps({"code": 2, "message": "Error"})
@@ -138,7 +154,7 @@ class PwaysPOSOrder(http.Controller):
         pos_order = request.env['pos.order'].sudo().search([('order_id','=',data_in_json.get('order_id'))])
         if pos_order:
             pos_order.sudo().write({'accept_reason': data_in_json.get('reason')})
-            pos_order.action_auto_accept()
+            pos_order.sudo().write({'state': 'paid'})
             if pos_order.state == "paid":
                 response = json.dumps({"code":1,"msg":'',"details":[]})
             else:
@@ -169,35 +185,35 @@ class PwaysPOSOrder(http.Controller):
 #ORDER TESTING URL FOR DEMO 
 
 
-    #order accept 
-    @http.route('/pos/v2/order/accept', type='json', auth='public')
-    def pos_url_order_accept(self):
-        data_in_json = json.loads(request.httprequest.data)
-        pos_order = request.env['pos.order'].sudo().search([('wera_order_id','=', data_in_json.get('order_id'))])
-        if pos_order:
-            pos_order.action_accept()
-            if pos_order.state == 'paid':
-                response = json.dumps({"code":1,"msg":'',"details":[]})
-            else:
-                response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
-        else:
-            response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
-        return response
+    # #order accept 
+    # @http.route('/pos/v2/order/accept', type='json', auth='public')
+    # def pos_url_order_accept(self):
+    #     data_in_json = json.loads(request.httprequest.data)
+    #     pos_order = request.env['pos.order'].sudo().search([('wera_order_id','=', data_in_json.get('order_id'))])
+    #     if pos_order:
+    #         pos_order.action_accept()
+    #         if pos_order.state == 'paid':
+    #             response = json.dumps({"code":1,"msg":'',"details":[]})
+    #         else:
+    #             response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
+    #     else:
+    #         response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
+    #     return response
 
-    #order reject
-    @http.route('/pos/v2/order/reject', type='json', auth='public')
-    def pos_url_order_reject(self):
-        data_in_json = json.loads(request.httprequest.data)
-        pos_order = request.env['pos.order'].sudo().search([('id','=', data_in_json.get('order_id'))])
-        if pos_order:
-            pos_order.sudo().write({'state': 'cancel','rejection_reason': data_in_json.get('rejection_id')})
-            if pos_order.state == 'cancel':
-                response = json.dumps({"code":1,"msg":'',"details":[]})
-            else:
-                response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
-        else:
-            response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
-        return response
+    # #order reject
+    # @http.route('/pos/v2/order/reject', type='json', auth='public')
+    # def pos_url_order_reject(self):
+    #     data_in_json = json.loads(request.httprequest.data)
+    #     pos_order = request.env['pos.order'].sudo().search([('id','=', data_in_json.get('order_id'))])
+    #     if pos_order:
+    #         pos_order.sudo().write({'state': 'cancel','rejection_reason': data_in_json.get('rejection_id')})
+    #         if pos_order.state == 'cancel':
+    #             response = json.dumps({"code":1,"msg":'',"details":[]})
+    #         else:
+    #             response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
+    #     else:
+    #         response = json.dumps({"code":2,"msg":'Could not update status at Swiggy/Zomato',"details":[]})
+    #     return response
 
     #action Food Ready
     @http.route('/pos/v2/order/food-ready', type='json', auth='public')

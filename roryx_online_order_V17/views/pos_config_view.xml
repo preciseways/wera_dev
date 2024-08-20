@@ -4,7 +4,7 @@
 	    <field name="model">res.config.settings</field>
 	    <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
 	    <field name="arch" type="xml">
-	        <xpath expr="//div[@id='pos_interface_section']" position="inside">
+	        <xpath expr="//block[@id='restaurant_section']" position="inside">
 	   			<div class="col-12 col-lg-6 o_setting_box">
 	                <div class="o_setting_left_pane">
 	   					<field name="custom_shop"/>
@@ -18,7 +18,7 @@
 	            </div>
 	        </xpath>
 	        <xpath expr="//button[@name='action_pos_config_create_new']" position="after">
-	        	<button name="create_new_session_for_orders" type="object" string="Session" class="col btn-link ms-2 text-nowrap" style="line-height: 0.5;" attrs="{'invisible': [('custom_shop', '=', False)]}"/>
+	        	<button name="create_new_session_for_orders" type="object" string="Session" class="col btn-link ms-2 text-nowrap" style="line-height: 0.5;" invisible="not custom_shop" />
 	        </xpath>
 	    </field>
 	</record>
@@ -50,16 +50,31 @@
             </xpath>
         </field>
     </record>
+    <record id="pways_wera_pos_attribute_variant_view_from_view" model="ir.ui.view">
+        <field name="name">product.template.attribute.value.inherited.form.view</field>
+        <field name="model">product.template.attribute.value</field>
+        <field name="inherit_id" ref="product.product_template_attribute_value_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_veg"/>
+                <field name="in_stock"/>
+                <field name="is_default"/>
+                <field name="order"/>
+                <field name="taxes_id" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
 
 	<record id="pways_pos_company_form_view" model="ir.ui.view">
         <field name="name">pos.res.company.form.view</field>
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='general_info']" position="after">
+            <xpath expr="//page[last()]" position="after">
             	<page name="wera_info" string="Wera Details">
             		<group>
 	            		<group>
+                            <field name="merchant_id"/>
 			                <field name="accept_url"/>
 			                <field name="reject_url"/>
 			                <field name="food_ready_url"/>
@@ -74,25 +89,16 @@
             		</group>
             	</page>            		
             </xpath>
-            <xpath expr="//page[@name='general_info']" position="after">
-            	<page name="odoo_webhook" string="Odoo Webhook">
+            <xpath expr="//page[last()]" position="after">
+            	<page name="odoo_webhook" string="Webhook">
             		<group>
 	            		<group>
-			                <field name="order_reject_webhook" widget="CopyClipboardChar"/>
+			                <field name="order_reject_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
+			                <field name="order_auto_accept_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
 			                <field name="order_place_order_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
 			                <field name="order_push_delivery_agent_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
-			                <field name="order_auto_accept_webhook" widget="CopyClipboardChar" options="{'string': 'Copy Link'}"/>
-<!-- 			                <field name="reject_url"/>
-			                <field name="food_ready_url"/>
-			                <field name="call_support"/> -->
 	            		</group>            		
-	            		<!-- <group> -->
-	            			<!-- <field name="menu_creation_url"/>
-			                <field name="order_delivery_url"/>
-			                <field name="order_pickup_url"/>
-			                <field name="get_customer_url"/> -->
-	            		<!-- </group> -->
-            		</group>
+	            	</group>
             	</page>            		
             </xpath>
         </field>
